@@ -3,6 +3,8 @@ import Image from 'next/image'
 import { Fragment, useState } from 'react'
 import { Dialog, Popover, Tab, Transition } from '@headlessui/react'
 import { MenuIcon, SearchIcon, ShoppingCartIcon, UserIcon, XIcon } from '@heroicons/react/outline'
+import Link from 'next/link'
+import Carts from './Carts'
 
 const currencies = [ 'CAD', 'USD', 'AUD', 'EUR', 'GBP' ]
 const navigation = {
@@ -76,6 +78,7 @@ function classNames(...classes: string[]) {
 
 export default function Header() {
     const [ mobileMenuOpen, setMobileMenuOpen ] = useState(false)
+    const [ openCart, setOpenCart ] = useState(false)
 
     return (
         <div className="bg-white">
@@ -221,14 +224,18 @@ export default function Header() {
 
                             <div className="border-t border-gray-200 py-6 px-4 space-y-6">
                                 <div className="flow-root">
-                                    <a href="#" className="-m-2 p-2 block font-medium text-gray-900">
+                                    <Link
+                                        href="/signup"
+                                        className="-m-2 p-2 block font-medium text-gray-900">
                                         Create an account
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="flow-root">
-                                    <a href="#" className="-m-2 p-2 block font-medium text-gray-900">
+                                    <Link
+                                        href="/signin"
+                                        className="-m-2 p-2 block font-medium text-gray-900">
                                         Sign in
-                                    </a>
+                                    </Link>
                                 </div>
                             </div>
 
@@ -322,13 +329,17 @@ export default function Header() {
                             </p>
 
                             <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                                <a href="#" className="text-sm font-medium text-white hover:text-gray-100">
+                                <Link
+                                    href="/signup"
+                                    className="text-sm font-medium text-white hover:text-gray-100">
                                     Create an account
-                                </a>
+                                </Link>
                                 <span className="h-6 w-px bg-gray-600" aria-hidden="true" />
-                                <a href="#" className="text-sm font-medium text-white hover:text-gray-100">
+                                <Link
+                                    href="/signin"
+                                    className="text-sm font-medium text-white hover:text-gray-100">
                                     Sign in
-                                </a>
+                                </Link>
                             </div>
                         </div>
                     </div>
@@ -340,7 +351,7 @@ export default function Header() {
                                 <div className="h-16 flex items-center justify-between">
                                     {/* Logo (lg+) */}
                                     <div className="hidden lg:flex lg:items-center">
-                                        <a href="#">
+                                        <Link href="/">
                                             <span className="sr-only">Workflow</span>
                                             <Image
                                                 width={32}
@@ -349,7 +360,7 @@ export default function Header() {
                                                 src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600"
                                                 alt=""
                                             />
-                                        </a>
+                                        </Link>
                                     </div>
 
                                     <div className="hidden h-full lg:flex">
@@ -480,13 +491,13 @@ export default function Header() {
                                                 ))}
 
                                                 {navigation.pages.map((page) => (
-                                                    <a
+                                                    <Link
                                                         key={page.name}
                                                         href={page.href}
                                                         className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
                                                     >
                                                         {page.name}
-                                                    </a>
+                                                    </Link>
                                                 ))}
                                             </div>
                                         </Popover.Group>
@@ -511,7 +522,9 @@ export default function Header() {
                                     </div>
 
                                     {/* Logo (lg-) */}
-                                    <a href="#" className="lg:hidden">
+                                    <Link
+                                        href="/profile"
+                                        className="lg:hidden">
                                         <span className="sr-only">Workflow</span>
                                         <Image
                                             width={32}
@@ -520,7 +533,7 @@ export default function Header() {
                                             alt=""
                                             className="h-8 w-auto"
                                         />
-                                    </a>
+                                    </Link>
 
                                     <div className="flex-1 flex items-center justify-end">
                                         <div className="flex items-center lg:ml-8">
@@ -533,24 +546,30 @@ export default function Header() {
                                                 </div>
 
                                                 <div className="flex">
-                                                    <a href="#" className="-m-2 p-2 text-gray-400 hover:text-gray-500">
+                                                    <Link
+                                                        href="/profile"
+                                                        className="-m-2 p-2 text-gray-400 hover:text-gray-500">
                                                         <span className="sr-only">Account</span>
                                                         <UserIcon className="w-6 h-6" aria-hidden="true" />
-                                                    </a>
+                                                    </Link>
                                                 </div>
                                             </div>
 
                                             <span className="mx-4 h-6 w-px bg-gray-200 lg:mx-6" aria-hidden="true" />
 
                                             <div className="flow-root">
-                                                <a href="#" className="group -m-2 p-2 flex items-center">
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setOpenCart(!openCart)}
+                                                    className="group -m-2 p-2 flex items-center">
                                                     <ShoppingCartIcon
                                                         className="flex-shrink-0 h-6 w-6 text-gray-400 group-hover:text-gray-500"
                                                         aria-hidden="true"
                                                     />
                                                     <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">0</span>
                                                     <span className="sr-only">items in cart, view bag</span>
-                                                </a>
+                                                </button>
+                                                <Carts openCart={openCart} setOpenCart={setOpenCart} />
                                             </div>
                                         </div>
                                     </div>
