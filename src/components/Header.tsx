@@ -68,7 +68,7 @@ const navigation = {
     ],
     pages: [
         { name: 'Company', href: '#' },
-        { name: 'Stores', href: '#' },
+        { name: 'Dashboard', href: '/dashboard' },
     ],
 }
 
