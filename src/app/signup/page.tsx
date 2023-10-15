@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useForm, SubmitHandler } from "react-hook-form"
 
 type Inputs = {
+    name: string
     email: string
     password: string
 }
@@ -45,6 +46,25 @@ export default function SignIn() {
 
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                     <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+
+                        <div>
+                            <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
+                                User name
+                            </label>
+                            {errors.name && <span>Name field is required</span>}
+                            <div className="mt-2">
+                                <input
+                                    id="name"
+                                    {...register("name", { required: true })}
+                                    type="text"
+                                    autoComplete="name"
+                                    defaultValue="name"
+                                    required
+                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                />
+                            </div>
+                        </div>
+
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                                 Email address
@@ -128,11 +148,11 @@ export default function SignIn() {
                     </div>
 
                     <p className="mt-10 text-center text-sm text-gray-500">
-                        Not a member?{' '}
+                        Already have an account!{' '}
                         <Link
-                            href="/signup"
+                            href="/signin"
                             className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
-                            Create an account
+                            Log in
                         </Link>
                     </p>
                 </div>

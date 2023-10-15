@@ -28,7 +28,7 @@ const products = [
     // More products...
 ]
 
-export default function Carts({ openCart, setOpenCart }: { openCart: boolean, setOpenCart: any }) {
+export default function Cart({ openCart, setOpenCart }: { openCart: boolean, setOpenCart: any }) {
     // const [ openCart, setOpenCart ] = useState(true)
 
     return (
