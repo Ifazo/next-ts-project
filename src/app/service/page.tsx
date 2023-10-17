@@ -10,7 +10,7 @@ async function getData() {
     return res.json()
 }
 
-export default async function Service() {
+export default async function page() {
     const data = await getData()
     console.log(data)
     return (

@@ -263,7 +263,7 @@ export default function Header() {
                             </Popover.Group>
 
                             {/* Logo */}
-                            <a href="#" className="flex">
+                            <Link href="/" className="flex">
                                 <span className="sr-only">Workflow</span>
                                 <Image
                                     width={32}
@@ -272,7 +272,7 @@ export default function Header() {
                                     src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600"
                                     alt=""
                                 />
-                            </a>
+                            </Link>
 
                             <div className="flex-1 flex items-center justify-end">
 

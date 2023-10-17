@@ -1,10 +1,10 @@
-import Blog from '@/components/Blog'
+import ServiceDetails from '@/components/ServiceDetails'
 import React from 'react'
 
 export default function page() {
   return (
       <div>
-          <Blog />
+          <ServiceDetails />
     </div>
   )
 }

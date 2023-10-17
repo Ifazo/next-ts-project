@@ -24,9 +24,9 @@ export default function NotFound() {
                             Go back home
                         </Link>
                         <Link
-                            href="#"
+                            href="/signin"
                             className="text-sm font-semibold text-gray-900">
-                            Contact support <span aria-hidden="true">&rarr;</span>
+                            Sign In <span aria-hidden="true">&rarr;</span>
                         </Link>
                     </div>
                 </div>
