@@ -1,6 +1,5 @@
 import ServiceFilter from '@/components/ServiceFilter'
 import ServiceList from '@/components/ServiceList'
-import React from 'react'
 
 async function getData() {
     const res = await fetch('http://localhost:5000/api/v1/products')
