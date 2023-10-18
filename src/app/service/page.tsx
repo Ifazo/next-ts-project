@@ -15,7 +15,7 @@ export default async function page() {
     return (
         <div>
             <ServiceFilter />
-            <ServiceList />
+            <ServiceList data={data}/>
         </div>
     )
 }
