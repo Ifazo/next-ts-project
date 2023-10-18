@@ -1,5 +1,5 @@
 type IService = {
-    id: number;
+    id: string;
     name: string;
     price: string;
     description: string;

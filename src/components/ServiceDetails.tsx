@@ -4,15 +4,6 @@ import { StarIcon } from '@heroicons/react/solid'
 import { Tab } from '@headlessui/react'
 import Image from 'next/image'
 
-const product = {
-    name: 'Application UI Icon Pack',
-    price: '$220',
-    date: '2021-06-05',
-    category: { name: 'SEO', href: '/seo' },
-    status: 'available',
-    image: 'https://tailwindui.com/img/ecommerce-images/product-page-05-product-01.jpg',
-    description: 'The Application UI Icon Pack comes with over 200 icons in 3 styles: outline, filled, and branded. This playful icon pack is tailored for complex application user interfaces with a friendly and legible look.',
-}
 const reviews = {
     average: 4,
     featured: [
@@ -61,8 +52,9 @@ function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function ServiceDetails() {
-
+export default function ServiceDetails({ data }: { data: any }) {
+    console.log(data)
+    const product = data?.data
     return (
         <div className="bg-white">
             <div className="mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -118,7 +110,7 @@ export default function ServiceDetails() {
                                 type="button"
                                 className="w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
                             >
-                                Book now {product.price}
+                                Book now ${product.price}
                             </button>
                             <button
                                 type="button"

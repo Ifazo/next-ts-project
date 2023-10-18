@@ -11,7 +11,7 @@ async function getData() {
 
 export default async function page() {
     const data = await getData()
-    console.log(data)
+    // console.log(data)
     return (
         <div>
             <ServiceFilter />
