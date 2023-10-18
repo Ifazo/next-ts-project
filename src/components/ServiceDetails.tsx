@@ -53,7 +53,7 @@ function classNames(...classes: string[]) {
 }
 
 export default function ServiceDetails({ data }: { data: any }) {
-    console.log(data)
+    // console.log(data)
     const product = data?.data
     return (
         <div className="bg-white">

@@ -3,6 +3,7 @@ import { Fragment, useState } from 'react'
 import { Dialog, Disclosure, Menu, Popover, Transition } from '@headlessui/react'
 import { XIcon } from '@heroicons/react/outline'
 import { ChevronDownIcon } from '@heroicons/react/solid'
+import Link from 'next/link'
 
 const sortOptions = [
     { name: 'Most Popular', href: '#', current: true },
@@ -75,7 +76,7 @@ export default function ServiceFilter() {
                     >
                         <div className="ml-auto relative max-w-xs w-full h-full bg-white shadow-xl py-4 pb-12 flex flex-col overflow-y-auto">
                             <div className="px-4 flex items-center justify-between">
-                                <h2 className="text-lg font-medium text-gray-900">Filters</h2>
+                                    <h2 className="text-lg font-medium text-gray-900">Filter</h2>
                                 <button
                                     type="button"
                                     className="-mr-2 w-10 h-10 bg-white p-2 rounded-md flex items-center justify-center text-gray-400"
@@ -263,11 +264,14 @@ export default function ServiceFilter() {
                 {/* Active filters */}
                 <div className="bg-gray-100">
                     <div className="max-w-7xl mx-auto py-3 px-4 sm:flex sm:items-center sm:px-6 lg:px-8">
-                        <h3 className="text-xs font-semibold uppercase tracking-wide text-gray-500">
-                            Filters
-                            <span className="sr-only">, active</span>
-                        </h3>
-
+                        <Link href={"/service/add"}>
+                            <button
+                                type="button"
+                                className="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            >
+                                Add Service
+                            </button>
+                        </Link>
                         <div aria-hidden="true" className="hidden w-px h-5 bg-gray-300 sm:block sm:ml-4" />
 
                         <div className="mt-2 sm:mt-0 sm:ml-4">

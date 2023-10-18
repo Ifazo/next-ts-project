@@ -2,6 +2,9 @@
 import { Fragment, useState } from "react";
 import { Dialog, Popover, Tab, Transition } from "@headlessui/react";
 import {
+    ArrowLeftIcon,
+    ArrowNarrowRightIcon,
+    ChatIcon,
     MenuIcon,
     SearchIcon,
     ShoppingBagIcon,
@@ -11,6 +14,8 @@ import {
 import Image from "next/image";
 import Cart from "./Cart";
 import Link from "next/link";
+import { useSession, signIn, signOut } from "next-auth/react"
+import { PlusSmIcon as PlusSmIconSolid } from '@heroicons/react/solid'
 
 const navigation = {
     categories: [
@@ -79,7 +84,6 @@ const navigation = {
         { name: "Service", href: "/service" },
         { name: "Blog", href: "/blog" },
         { name: "Dashboard", href: "/dashboard" },
-        { name: "Sign In", href: "/signin" },
     ],
 };
 
@@ -88,6 +92,8 @@ function classNames(...classes: string[]) {
 }
 
 export default function Header() {
+    const { data: session } = useSession()
+    console.log(session)
     const [ open, setOpen ] = useState(false);
     const [ openCart, setOpenCart ] = useState(false)
 
@@ -284,15 +290,7 @@ export default function Header() {
                                     <SearchIcon className="w-6 h-6" aria-hidden="true" />
                                 </a>
 
-                                {/* Notification */}
-                                {/* <a
-                                    href="#"
-                                    className="p-2 text-gray-400 hover:text-gray-500 lg:ml-4">
-                                    <span className="sr-only">Chat</span>
-                                    <ChatIcon className="w-6 h-6" aria-hidden="true" />
-                                </a> */}
-
-                                {/* Account */}
+                                {/* Profile */}
                                 <Link
                                     href="/profile"
                                     className="p-2 text-gray-400 hover:text-gray-500 lg:ml-4">
@@ -310,13 +308,30 @@ export default function Header() {
                                             className="flex-shrink-0 h-6 w-6 text-gray-400 group-hover:text-gray-500"
                                             aria-hidden="true"
                                         />
-                                        <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                                            0
-                                        </span>
                                         <span className="sr-only">items in cart, view bag</span>
                                     </button>
                                     <Cart openCart={openCart} setOpenCart={setOpenCart} />
                                 </div>
+
+                                {/* Auth */}
+                                <div className="ml-4 flow-root lg:ml-6">
+                                {session?.user
+                                    ? (<button
+                                        type="button"
+                                        onClick={() => signOut()}
+                                        className="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                    >
+                                        Sign Out
+                                    </button>)
+                                    : (<button
+                                        type="button"
+                                        onClick={() => signIn()}
+                                        className="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                    >
+                                        Sign In
+                                    </button>)}
+                                </div>
+
                             </div>
                         </div>
                     </div>
