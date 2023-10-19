@@ -52,9 +52,8 @@ function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function ServiceDetails({ data }: { data: any }) {
+export default function ServiceDetails({ data: product }: { data: any }) {
     // console.log(data)
-    const product = data?.data
     return (
         <div className="bg-white">
             <div className="mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
