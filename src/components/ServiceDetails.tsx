@@ -3,6 +3,9 @@ import { Fragment } from 'react'
 import { StarIcon } from '@heroicons/react/solid'
 import { Tab } from '@headlessui/react'
 import Image from 'next/image'
+import { useAppDispatch } from '@/store/hook'
+import { addProduct } from '@/store/features/cart/cartSlice'
+import { IService } from '@/types'
 
 const reviews = {
     average: 4,
@@ -54,6 +57,11 @@ function classNames(...classes: string[]) {
 
 export default function ServiceDetails({ data: product }: { data: any }) {
     // console.log(data)
+    const dispatch = useAppDispatch()
+    const handleAddToCart = (product: IService) => {
+            dispatch(addProduct(product))
+    }
+
     return (
         <div className="bg-white">
             <div className="mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -113,6 +121,7 @@ export default function ServiceDetails({ data: product }: { data: any }) {
                             </button>
                             <button
                                 type="button"
+                                onClick={() => handleAddToCart(product)}
                                 className="w-full bg-indigo-50 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-indigo-700 hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
                             >
                                 Add cart

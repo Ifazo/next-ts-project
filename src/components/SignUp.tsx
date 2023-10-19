@@ -2,6 +2,7 @@
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form"
 
 type Inputs = {
@@ -12,12 +13,24 @@ type Inputs = {
 
 export default function SignUp() {
 
+    const router = useRouter();
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm<Inputs>()
-    const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
+
+    const onSubmit: SubmitHandler<Inputs> = (data) => {
+        // console.log(data)
+        fetch("http://localhost:3000/api/auth/signup", {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+        // router.push("/signin");
+    }
 
     return (
         <>
@@ -39,7 +52,7 @@ export default function SignUp() {
                         alt="Your Company"
                     />
                     <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-                        Sign in to your account
+                        Create your account
                     </h2>
                 </div>
 
@@ -48,17 +61,15 @@ export default function SignUp() {
 
                         <div>
                             <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
-                                User name
+                                Full name
                             </label>
                             {errors.name && <span>Name field is required</span>}
                             <div className="mt-2">
                                 <input
                                     id="name"
-                                    {...register("name", { required: true })}
                                     type="text"
-                                    autoComplete="name"
-                                    defaultValue="name"
-                                    required
+                                    {...register("name", { required: true })}
+                                    placeholder="Your Name"
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                             </div>
@@ -72,11 +83,9 @@ export default function SignUp() {
                             <div className="mt-2">
                                 <input
                                     id="email"
-                                    {...register("email", { required: true })}
                                     type="email"
-                                    autoComplete="email"
-                                    defaultValue="email"
-                                    required
+                                    {...register("email", { required: true })}
+                                    placeholder="Your Email"
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                             </div>
@@ -99,9 +108,7 @@ export default function SignUp() {
                                     id="password"
                                     {...register("password", { required: true })}
                                     type="password"
-                                    autoComplete="current-password"
-                                    defaultValue="password"
-                                    required
+                                    placeholder="Your Password"
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                             </div>
@@ -112,7 +119,7 @@ export default function SignUp() {
                                 type="submit"
                                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                             >
-                                Sign in
+                                Sign Up
                             </button>
                         </div>
                     </form>

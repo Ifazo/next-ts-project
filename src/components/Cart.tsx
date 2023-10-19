@@ -2,6 +2,9 @@ import { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { XIcon } from '@heroicons/react/outline'
 import Image from 'next/image'
+import { useAppDispatch, useAppSelector } from '@/store/hook'
+import { clearProducts, removeProduct } from '@/store/features/cart/cartSlice'
+import { IService } from '@/types'
 
 const products = [
     {
@@ -29,7 +32,16 @@ const products = [
 ]
 
 export default function Cart({ openCart, setOpenCart }: { openCart: boolean, setOpenCart: any }) {
-    // const [ openCart, setOpenCart ] = useState(true)
+    const state = useAppSelector(state => state.cart)
+    const products = state.cart
+
+    const dispatch = useAppDispatch()
+    const handleRemoveFromCart = (product: IService) => {
+        dispatch(removeProduct(product))
+    }
+    const handleClearCart = () => {
+        dispatch(clearProducts())
+    }
 
     return (
         <Transition.Root show={openCart} as={Fragment}>
@@ -85,8 +97,8 @@ export default function Cart({ openCart, setOpenCart }: { openCart: boolean, set
                                                                     <Image
                                                                         height={96}
                                                                         width={96}
-                                                                        src={product.imageSrc}
-                                                                        alt={product.imageAlt}
+                                                                        src={product.image}
+                                                                        alt="cart"
                                                                         className="h-full w-full object-cover object-center"
                                                                     />
                                                                 </div>
@@ -95,18 +107,19 @@ export default function Cart({ openCart, setOpenCart }: { openCart: boolean, set
                                                                     <div>
                                                                         <div className="flex justify-between text-base font-medium text-gray-900">
                                                                             <h3>
-                                                                                <a href={product.href}>{product.name}</a>
+                                                                                <a href={product.id}>{product.name}</a>
                                                                             </h3>
-                                                                            <p className="ml-4">{product.price}</p>
+                                                                            <p className="ml-4">${product.price}</p>
                                                                         </div>
-                                                                        <p className="mt-1 text-sm text-gray-500">{product.color}</p>
+                                                                        <p className="mt-1 text-sm text-gray-500">{product.status}</p>
                                                                     </div>
                                                                     <div className="flex flex-1 items-end justify-between text-sm">
-                                                                        <p className="text-gray-500">Qty {product.quantity}</p>
+                                                                        <p className="text-gray-500">Qty {product.date}</p>
 
                                                                         <div className="flex">
                                                                             <button
                                                                                 type="button"
+                                                                                onClick={() => handleRemoveFromCart(product)}
                                                                                 className="font-medium text-indigo-600 hover:text-indigo-500"
                                                                             >
                                                                                 Remove
@@ -126,7 +139,10 @@ export default function Cart({ openCart, setOpenCart }: { openCart: boolean, set
                                                 <p>Subtotal</p>
                                                 <p>$262.00</p>
                                             </div>
-                                            <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
+                                            <div className='flex justify-between'>
+                                                <button type="button" onClick={() => handleClearCart()}>clear</button>
+                                                <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
+                                            </div>
                                             <div className="mt-6">
                                                 <a
                                                     href="#"

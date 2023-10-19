@@ -14,8 +14,8 @@ export async function POST(request: Request) {
 }
 
 export async function GET(request: Request) {
-    const products = await db.category.findMany();
-    return new Response(JSON.stringify(products), {
-        headers: { "content-type": "application/json" },
-    });
-    }
+  const products = await db.category.findMany();
+  return new Response(JSON.stringify(products), {
+    headers: { "content-type": "application/json" },
+  });
+}

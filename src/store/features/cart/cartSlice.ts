@@ -1,6 +1,11 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { IService } from "@/types";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+export interface ICartState {
+  cart: IService[];
+}
+
+const initialState: ICartState = {
   cart: [],
 };
 
@@ -8,15 +13,18 @@ const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    addProduct: (state, action) => {
-      state.cart.push = action.payload;
+    addProduct: (state, action: PayloadAction<IService>) => {
+      state.cart.push(action.payload);
     },
-    removeProduct: (state, action) => {
-      state.cart.push = action.payload;
+    removeProduct: (state, action: PayloadAction<IService>) => {
+      state.cart = state.cart.filter((product) => (product.id !== action.payload.id));
+    },
+    clearProducts: (state) => {
+      state.cart = [];
     },
   },
 });
 
-export const { addProduct, removeProduct } = cartSlice.actions;
+export const { addProduct, removeProduct, clearProducts } = cartSlice.actions;
 
 export default cartSlice;

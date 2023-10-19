@@ -17,7 +17,17 @@ export default function SignIn() {
         watch,
         formState: { errors },
     } = useForm<Inputs>()
-    const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
+    
+    const onSubmit: SubmitHandler<Inputs> = (data) => {
+        console.log(data)
+        fetch("http://localhost:3000/api/auth/signin", {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+    }
 
     return (
         <>
@@ -47,17 +57,15 @@ export default function SignIn() {
                     <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
-                                Email address
+                                Email
                             </label>
                             {errors.email && <span>Email field is required</span>}
                             <div className="mt-2">
                                 <input
                                     id="email"
-                                    {...register("email", { required: true })}
                                     type="email"
-                                    autoComplete="email"
-                                    defaultValue="email"
-                                    required
+                                    {...register("email", { required: true })}
+                                    placeholder="Your E-mail"
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                             </div>
@@ -78,11 +86,9 @@ export default function SignIn() {
                             <div className="mt-2">
                                 <input
                                     id="password"
-                                    {...register("password", { required: true })}
                                     type="password"
-                                    autoComplete="current-password"
-                                    defaultValue="password"
-                                    required
+                                    {...register("password", { required: true })}
+                                    placeholder="Your Password"
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                             </div>
@@ -91,9 +97,10 @@ export default function SignIn() {
                         <div>
                             <button
                                 type="submit"
+                                onClick={() => signIn("credentials", { callbackUrl: "http://localhost:3000" })}
                                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                             >
-                                Sign in
+                                Sign In
                             </button>
                         </div>
                     </form>

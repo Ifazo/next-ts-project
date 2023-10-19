@@ -8,19 +8,16 @@ CREATE TYPE "ProductStatus" AS ENUM ('upcoming', 'available', 'stockout');
 CREATE TYPE "OrderStatus" AS ENUM ('PENDING', 'ACCEPTED', 'REJECTED');
 
 -- CreateTable
-CREATE TABLE "user" (
+CREATE TABLE "users" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "role" "Role" NOT NULL DEFAULT 'USER',
-    "contactNo" TEXT NOT NULL,
-    "address" TEXT NOT NULL,
-    "profileImg" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3),
 
-    CONSTRAINT "user_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "users_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -34,7 +31,7 @@ CREATE TABLE "categories" (
 );
 
 -- CreateTable
-CREATE TABLE "product" (
+CREATE TABLE "products" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
@@ -46,11 +43,11 @@ CREATE TABLE "product" (
     "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3),
 
-    CONSTRAINT "product_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "products_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "reviewAndRating" (
+CREATE TABLE "reviewAndRatings" (
     "id" TEXT NOT NULL,
     "review" TEXT NOT NULL,
     "rating" INTEGER NOT NULL,
@@ -59,11 +56,11 @@ CREATE TABLE "reviewAndRating" (
     "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3),
 
-    CONSTRAINT "reviewAndRating_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "reviewAndRatings_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "order" (
+CREATE TABLE "orders" (
     "id" TEXT NOT NULL,
     "user" TEXT NOT NULL,
     "status" "OrderStatus" NOT NULL DEFAULT 'PENDING',
@@ -71,23 +68,23 @@ CREATE TABLE "order" (
     "updatedAt" TIMESTAMP(3),
     "orderedBooks" JSONB[],
 
-    CONSTRAINT "order_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "orders_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "user_email_key" ON "user"("email");
+CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "categories_name_key" ON "categories"("name");
 
 -- AddForeignKey
-ALTER TABLE "product" ADD CONSTRAINT "product_category_fkey" FOREIGN KEY ("category") REFERENCES "categories"("name") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "products" ADD CONSTRAINT "products_category_fkey" FOREIGN KEY ("category") REFERENCES "categories"("name") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "reviewAndRating" ADD CONSTRAINT "reviewAndRating_user_fkey" FOREIGN KEY ("user") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "reviewAndRatings" ADD CONSTRAINT "reviewAndRatings_user_fkey" FOREIGN KEY ("user") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "reviewAndRating" ADD CONSTRAINT "reviewAndRating_product_fkey" FOREIGN KEY ("product") REFERENCES "product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "reviewAndRatings" ADD CONSTRAINT "reviewAndRatings_product_fkey" FOREIGN KEY ("product") REFERENCES "products"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "order" ADD CONSTRAINT "order_user_fkey" FOREIGN KEY ("user") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "orders" ADD CONSTRAINT "orders_user_fkey" FOREIGN KEY ("user") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

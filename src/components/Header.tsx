@@ -315,21 +315,20 @@ export default function Header() {
 
                                 {/* Auth */}
                                 <div className="ml-4 flow-root lg:ml-6">
-                                {session?.user
-                                    ? (<button
-                                        type="button"
-                                        onClick={() => signOut()}
-                                        className="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                                    >
-                                        Sign Out
-                                    </button>)
-                                    : (<button
-                                        type="button"
-                                        onClick={() => signIn()}
-                                        className="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                                    >
-                                        Sign In
-                                    </button>)}
+                                    {session?.user
+                                        ? (<button
+                                            type="button"
+                                            onClick={() => signOut()}
+                                            className="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                        >
+                                            Sign Out
+                                        </button>)
+                                        : (<Link
+                                            href="/signin"
+                                            className="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                        >
+                                            Sign In
+                                        </Link>)}
                                 </div>
 
                             </div>

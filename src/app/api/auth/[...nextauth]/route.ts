@@ -4,19 +4,30 @@ import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { GithubProfile } from "next-auth/providers/github";
 import { GoogleProfile } from "next-auth/providers/google";
+import { db } from "@/db/script";
 
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
+      id: "credentials",
       name: "Credentials",
       credentials: {
-        username: { label: "Username", type: "text", placeholder: "Your Name" },
+        email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials, req) {
-        const user = { id: "1", name: "J Smith", email: "jsmith@example.com" };
-
-        if (user) {
+      async authorize(credentials) {
+        if (!credentials) {
+          return null;
+        }
+        const user = await db.user.findUnique({
+          where: {
+            email: credentials.email
+          },
+        });
+        if (!user) {
+          return null;
+        }
+        if (user.password === credentials.password) {
           return user;
         } else {
           return null;
@@ -53,6 +64,13 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET as string,
+  pages: {
+    signIn: "/auth/signin",
+    signOut: "/auth/signout",
+    error: "/auth/error",
+    verifyRequest: "/auth/verify-request",
+    newUser: "/auth/signup",
+  },
 };
 
 const handler = NextAuth(authOptions);

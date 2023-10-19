@@ -11,8 +11,8 @@ datasource db {
 }
 
 enum Role {
-  ADMIN
-  USER
+  user
+  admin
 }
 
 enum ProductStatus {
@@ -22,9 +22,9 @@ enum ProductStatus {
 }
 
 enum OrderStatus {
-  PENDING
-  ACCEPTED
-  REJECTED
+  pending
+  accepted
+  rejected
 }
 
 model User {
@@ -32,10 +32,7 @@ model User {
   name             String
   email            String            @unique
   password         String
-  role             Role              @default(USER)
-  contactNo        String
-  address          String
-  profileImg       String
+  role             Role              @default(user)
   createdAt        DateTime?         @default(now())
   updatedAt        DateTime?         @updatedAt()
   reviewAndRatings ReviewAndRating[]
@@ -89,7 +86,7 @@ model Order {
   id           String      @id @default(uuid())
   user         String
   users       User        @relation(fields: [user], references: [id])
-  status       OrderStatus @default(PENDING)
+  status       OrderStatus @default(pending)
   createdAt    DateTime?   @default(now())
   updatedAt    DateTime?   @updatedAt
   orderedBooks Json[]
