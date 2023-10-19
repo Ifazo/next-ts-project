@@ -32,7 +32,7 @@ export default function AddService() {
                 const image = result.data.display_url;
                 data.image = image;
                 data.date = new Date(data.date).toISOString();
-                fetch('http://localhost:5000/api/v1/products', {
+                fetch('http://localhost:3000/api/products', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data),
@@ -90,10 +90,10 @@ export default function AddService() {
                                     {...register("category", { required: true })}
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                     <option selected disabled>Select category</option>
-                                    <option value="TV">TV/Monitors</option>
+                                    <option value="TV">TV</option>
                                     <option value="PC">PC</option>
-                                    <option value="GA">Gaming/Console</option>
-                                    <option value="PH">Phones</option>
+                                    <option value="Laptop">Laptop</option>
+                                    <option value="Phone">Phone</option>
                                 </select>
                             </div>
                             <div>

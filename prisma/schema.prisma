@@ -1,0 +1,98 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum ProductStatus {
+  upcoming
+  available
+  stockout
+}
+
+enum OrderStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+model User {
+  id               String            @id @default(uuid())
+  name             String
+  email            String            @unique
+  password         String
+  role             Role              @default(USER)
+  contactNo        String
+  address          String
+  profileImg       String
+  createdAt        DateTime?         @default(now())
+  updatedAt        DateTime?         @updatedAt()
+  reviewAndRatings ReviewAndRating[]
+  orders           Order[]
+
+  @@map("users")
+}
+
+model Category {
+  id        String    @id @default(uuid())
+  name      String    @unique
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  products  Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id               String            @id @default(uuid())
+  name             String
+  description      String
+  price            String
+  image            String
+  date             DateTime
+  status           String
+  category         String
+  categories       Category          @relation(fields: [category], references: [name])
+  createdAt        DateTime?         @default(now())
+  updatedAt        DateTime?         @updatedAt
+  reviewAndRatings ReviewAndRating[]
+
+  @@map("products")
+}
+
+model ReviewAndRating {
+  id        String    @id @default(uuid())
+  review    String
+  rating    Int
+  user      String
+  users    User      @relation(fields: [user], references: [id])
+  product   String
+  products Product   @relation(fields: [product], references: [id])
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+
+  @@map("reviewAndRatings")
+}
+
+model Order {
+  id           String      @id @default(uuid())
+  user         String
+  users       User        @relation(fields: [user], references: [id])
+  status       OrderStatus @default(PENDING)
+  createdAt    DateTime?   @default(now())
+  updatedAt    DateTime?   @updatedAt
+  orderedBooks Json[]
+
+  @@map("orders")
+}

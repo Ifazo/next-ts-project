@@ -1,7 +1,7 @@
 import ServiceDetails from '@/components/ServiceDetails'
 
 async function getData(id: string) {
-  const res = await fetch(`http://localhost:5000/api/v1/products/${id}`)
+  const res = await fetch(`http://localhost:3000/api/products/${id}`)
   return res.json()
 }
 
