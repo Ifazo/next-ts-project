@@ -12,6 +12,8 @@ import {
     XIcon,
 } from '@heroicons/react/outline'
 import Image from 'next/image'
+import UserTable from './UserTable'
+import { IUser } from '@/types'
 
 const navigation = [
     { name: 'Dashboard', href: '#', icon: HomeIcon, current: true },
@@ -26,7 +28,7 @@ function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function Dashboard() {
+export default function Dashboard({ user }: { user: IUser[] }) {
     const [ sidebarOpen, setSidebarOpen ] = useState(false)
 
     return (
@@ -217,9 +219,7 @@ export default function Dashboard() {
                             </div>
                             <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
                                 {/* Replace with your content */}
-                                <div className="py-4">
-                                    <div className="border-4 border-dashed border-gray-200 rounded-lg h-96" />
-                                </div>
+                                <UserTable user={user} />
                                 {/* /End replace */}
                             </div>
                         </div>

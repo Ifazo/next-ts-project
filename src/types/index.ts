@@ -11,4 +11,14 @@ type IService = {
     updatedAt: string;
 };
 
-export type { IService };
+type IUser = {
+    id: string;
+    name: string;
+    email: string;
+    password: string;
+    role: string;
+    createdAt: string;
+    updatedAt: string;
+};
+
+export type { IService, IUser };

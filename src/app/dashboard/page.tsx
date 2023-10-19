@@ -1,10 +1,19 @@
 import Dashboard from '@/components/Dashboard'
-import React from 'react'
 
-export default function page() {
+async function getUser() {
+  const res = await fetch('http://localhost:3000/api/users')
+  if (!res.ok) {
+    throw new Error('Failed to fetch data')
+  }
+  return res.json()
+}
+
+export default async function page() {
+  const user = await getUser()
+  console.log(user)
   return (
       <div>
-          <Dashboard />
+      <Dashboard user={user}/>
     </div>
   )
 }
