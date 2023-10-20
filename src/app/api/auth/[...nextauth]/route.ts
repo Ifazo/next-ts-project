@@ -4,7 +4,6 @@ import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { GithubProfile } from "next-auth/providers/github";
 import { GoogleProfile } from "next-auth/providers/google";
-import { db } from "@/db/script";
 
 export const authOptions: NextAuthOptions = {
   providers: [

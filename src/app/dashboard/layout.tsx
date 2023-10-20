@@ -12,14 +12,16 @@ import {
     XIcon,
 } from '@heroicons/react/outline'
 import Image from 'next/image'
+import Link from 'next/link'
+import { useSession } from 'next-auth/react'
 
 const navigation = [
-    { name: 'Dashboard', href: '#', icon: HomeIcon, current: true },
-    { name: 'Team', href: '#', icon: UsersIcon, current: false },
-    { name: 'Projects', href: '#', icon: FolderIcon, current: false },
-    { name: 'Calendar', href: '#', icon: CalendarIcon, current: false },
-    { name: 'Documents', href: '#', icon: InboxIcon, current: false },
-    { name: 'Reports', href: '#', icon: ChartBarIcon, current: false },
+    { name: 'Dashboard', icon: HomeIcon, href: '/dashboard', current: false },
+    { name: 'Users', icon: UsersIcon, href: '/dashboard/users', current: false },
+    { name: 'Services', icon: CalendarIcon, href: '/dashboard/services', current: false },
+    { name: 'Orders', icon: FolderIcon, href: '/dashboard/orders', current: false },
+    { name: 'Wishlist', icon: InboxIcon, href: '/dashboard', current: false },
+    { name: 'Reviews', icon: ChartBarIcon, href: '/dashboard', current: false },
 ]
 
 function classNames(...classes: string[]) {
@@ -28,7 +30,8 @@ function classNames(...classes: string[]) {
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
     const [ sidebarOpen, setSidebarOpen ] = useState(false)
-
+    const { data: session } = useSession()
+    console.log(session)
     return (
         <section>
             {/*
@@ -94,26 +97,28 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                                         />
                                     </div>
                                     <nav className="mt-5 px-2 space-y-1">
-                                        {navigation.map((item) => (
-                                            <a
-                                                key={item.name}
+                                        {navigation.map((item, index) => (
+                                            <Link
+                                                key={index}
                                                 href={item.href}
-                                                className={classNames(
-                                                    item.current
-                                                        ? 'bg-gray-100 text-gray-900'
-                                                        : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
-                                                    'group flex items-center px-2 py-2 text-base font-medium rounded-md'
-                                                )}
+                                                className='active:bg-gray-100 active:text-gray-900 text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-base font-medium rounded-md'
+                                                // className={classNames(
+                                                //     item.current
+                                                //         ? 'bg-gray-100 text-gray-900'
+                                                //         : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
+                                                //     'group flex items-center px-2 py-2 text-base font-medium rounded-md'
+                                                // )}
                                             >
                                                 <item.icon
-                                                    className={classNames(
-                                                        item.current ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
-                                                        'mr-4 flex-shrink-0 h-6 w-6'
-                                                    )}
-                                                    aria-hidden="true"
+                                                    className='text-gray-400 group-hover:text-gray-500 mr-4 flex-shrink-0 h-6 w-6 active:text-gray-500'
+                                                    // className={classNames(
+                                                    //     item.current ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
+                                                    //     'mr-4 flex-shrink-0 h-6 w-6'
+                                                    // )}
+                                                    // aria-hidden="true"
                                                 />
                                                 {item.name}
-                                            </a>
+                                            </Link>
                                         ))}
                                     </nav>
                                 </div>
@@ -157,25 +162,26 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                                 />
                             </div>
                             <nav className="mt-5 flex-1 px-2 bg-white space-y-1">
-                                {navigation.map((item) => (
-                                    <a
-                                        onClick={() => item.current = true}
-                                        key={item.name}
+                                {navigation.map((item, index) => (
+                                    <Link
+                                        key={index}
                                         href={item.href}
-                                        className={classNames(
-                                            item.current ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
-                                            'group flex items-center px-2 py-2 text-sm font-medium rounded-md'
-                                        )}
+                                        className='active:bg-gray-100 active:text-gray-900 text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md'
+                                        // className={classNames(
+                                        //     item.current ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
+                                        //     'group flex items-center px-2 py-2 text-sm font-medium rounded-md'
+                                        // )}
                                     >
                                         <item.icon
-                                            className={classNames(
-                                                item.current ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
-                                                'mr-3 flex-shrink-0 h-6 w-6'
-                                            )}
+                                            className='text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6 active:text-gray-500'
+                                            // className={classNames(
+                                            //     item.current ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
+                                            //     'mr-3 flex-shrink-0 h-6 w-6'
+                                            // )}
                                             aria-hidden="true"
                                         />
                                         {item.name}
-                                    </a>
+                                    </Link>
                                 ))}
                             </nav>
                         </div>
@@ -187,13 +193,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                                             height={36}
                                             width={36}
                                             className="inline-block h-9 w-9 rounded-full"
-                                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                            src={session?.user?.image || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'}
                                             alt=""
                                         />
                                     </div>
                                     <div className="ml-3">
-                                        <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900">Tom Cook</p>
-                                        <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">View profile</p>
+                                        <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900">{session?.user?.name}</p>
+                                        <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">{session?.user?.email}</p>
                                     </div>
                                 </div>
                             </a>
@@ -213,9 +219,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     </div>
                     <main className="flex-1">
                         <div className="py-6">
-                                {/* Replace with your content */}
-                                {children}
-                                {/* /End replace */}
+                            {/* Replace with your content */}
+                            {children}
+                            {/* /End replace */}
                         </div>
                     </main>
                 </div>

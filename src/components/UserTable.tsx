@@ -1,10 +1,18 @@
 'use client'
 import { IUser } from "@/types"
+import { toast } from "react-hot-toast";
 
-export default function UserTable({ data }: { data: IUser[] }) {
+// eslint-disable-next-line @next/next/no-async-client-component
+export default async function UserTable() {
+    const res = await fetch('http://localhost:3000/api/users', { cache: 'no-cache' })
+    if (!res.ok) {
+        throw new Error('Failed to fetch data')
+    }
+    const data = await res.json()
+    // console.log(data)
 
     const handleEdit = (id: string, user: IUser) => {
-        console.log(`edit ${id}`)
+        // console.log(`edit ${id}`)
         fetch(`http://localhost:3000/api/users/${id}`, {
             method: 'PATCH',
             cache: 'no-cache',
@@ -18,7 +26,7 @@ export default function UserTable({ data }: { data: IUser[] }) {
             },
         })
             .then(res => res.json())
-            .then(data => console.log(data))
+            .then(data => toast.success(`Updated ${data.name}`))
     }
     const handleDelete = (id: string) => {
         console.log(`delete ${id}`)
@@ -27,7 +35,7 @@ export default function UserTable({ data }: { data: IUser[] }) {
             cache: 'no-cache'
         })
             .then(res => res.json())
-            .then(data => console.log(data))
+            .then(data => toast.success(`Deleted ${data.name}`))
     }
 
     return (
@@ -73,7 +81,7 @@ export default function UserTable({ data }: { data: IUser[] }) {
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-gray-200 bg-white">
-                                    {data.map((user) => (
+                                    {data.map((user: IUser) => (
                                         <tr key={user.email}>
                                             <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
                                                 {user.name}

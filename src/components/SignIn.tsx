@@ -2,8 +2,8 @@
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form"
+import { toast } from "react-hot-toast";
 
 type Inputs = {
     email: string
@@ -11,7 +11,7 @@ type Inputs = {
 }
 
 export default function SignIn() {
-    const router = useRouter();
+
     const {
         register,
         handleSubmit,
@@ -20,12 +20,17 @@ export default function SignIn() {
     } = useForm<Inputs>()
     const password = watch("password")
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-        console.log(data)
         signIn("credentials", {
             email: data.email,
             password: data.password,
             callbackUrl: "http://localhost:3000/",
         })
+            .then(() => {
+                toast.success("Logged in successfully")
+            })
+            .catch(() => {
+                toast.error("Failed to login")
+            })
     }
 
     return (
@@ -109,8 +114,11 @@ export default function SignIn() {
                             onClick={() => {
                                 signIn("google", {
                                     callbackUrl: "http://localhost:3000/",
+                                }).then(() => {
+                                    toast.success("Google Logged in successfully")
+                                }).catch(() => {
+                                    toast.error("Failed to google login")
                                 })
-                                router.push("/")
                             }}
                             className="text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 m-2">
                             <svg className="w-4 h-4 m-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 19">
@@ -123,8 +131,11 @@ export default function SignIn() {
                             onClick={() => {
                                 signIn("github", {
                                     callbackUrl: "http://localhost:3000/",
+                                }).then(() => {
+                                    toast.success("Github Logged in successfully")
+                                }).catch(() => {
+                                    toast.error("Failed to github login")
                                 })
-                                router.push("/")
                             }}
                             className="text-white bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 focus:outline-none focus:ring-[#24292F]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500 dark:hover:bg-[#050708]/30 m-2">
                             <svg className="w-4 h-4 m-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">

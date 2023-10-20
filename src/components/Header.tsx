@@ -2,9 +2,6 @@
 import { Fragment, useState } from "react";
 import { Dialog, Popover, Tab, Transition } from "@headlessui/react";
 import {
-    ArrowLeftIcon,
-    ArrowNarrowRightIcon,
-    ChatIcon,
     MenuIcon,
     SearchIcon,
     ShoppingBagIcon,
@@ -14,8 +11,8 @@ import {
 import Image from "next/image";
 import Cart from "./Cart";
 import Link from "next/link";
-import { useSession, signIn, signOut } from "next-auth/react"
-import { PlusSmIcon as PlusSmIconSolid } from '@heroicons/react/solid'
+import { useSession, signOut } from "next-auth/react"
+import { toast } from "react-hot-toast";
 
 const navigation = {
     categories: [
@@ -318,7 +315,10 @@ export default function Header() {
                                     {session?.user
                                         ? (<button
                                             type="button"
-                                            onClick={() => signOut()}
+                                            onClick={() => {
+                                                signOut()
+                                                toast.success('Signed out successfully')
+                                            }}
                                             className="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                         >
                                             Sign Out
