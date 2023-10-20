@@ -37,6 +37,7 @@ model User {
   updatedAt        DateTime?         @updatedAt()
   reviewAndRatings ReviewAndRating[]
   orders           Order[]
+  products         Product[]
 
   @@map("users")
 }
@@ -61,6 +62,8 @@ model Product {
   status           String
   category         String
   categories       Category          @relation(fields: [category], references: [name])
+  email            String
+  users            User              @relation(fields: [email], references: [email])
   createdAt        DateTime?         @default(now())
   updatedAt        DateTime?         @updatedAt
   reviewAndRatings ReviewAndRating[]
@@ -73,9 +76,9 @@ model ReviewAndRating {
   review    String
   rating    Int
   user      String
-  users    User      @relation(fields: [user], references: [id])
+  users     User      @relation(fields: [user], references: [id])
   product   String
-  products Product   @relation(fields: [product], references: [id])
+  products  Product   @relation(fields: [product], references: [id])
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
 
@@ -85,7 +88,7 @@ model ReviewAndRating {
 model Order {
   id           String      @id @default(uuid())
   user         String
-  users       User        @relation(fields: [user], references: [id])
+  users        User        @relation(fields: [user], references: [id])
   status       OrderStatus @default(pending)
   createdAt    DateTime?   @default(now())
   updatedAt    DateTime?   @updatedAt

@@ -38,7 +38,7 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.GITHUB_ID as string,
       clientSecret: process.env.GITHUB_SECRET as string,
       profile(profile: GithubProfile) {
-        // console.log(profile);
+        console.log(profile);
         return {
           id: profile.id.toString(),
           name: profile.name,
@@ -52,9 +52,9 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
       profile(profile: GoogleProfile) {
-        // console.log(profile);
+        console.log(profile);
         return {
-          id: profile.id.toString(),
+          id: profile.sub,
           name: profile.name,
           email: profile.email,
           image: profile.picture,
@@ -64,13 +64,6 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET as string,
-  pages: {
-    signIn: "/auth/signin",
-    signOut: "/auth/signout",
-    error: "/auth/error",
-    verifyRequest: "/auth/verify-request",
-    newUser: "/auth/signup",
-  },
 };
 
 const handler = NextAuth(authOptions);

@@ -1,4 +1,5 @@
 import { IUser } from "@/types"
+import { useRouter } from "next/navigation"
 
 /* This example requires Tailwind CSS v2.0+ */
 const people = [
@@ -6,7 +7,25 @@ const people = [
     // More people...
 ]
 
-export default function UserTable({ user }: { user: IUser[]}) {
+export default function UserTable({ user }: { user: IUser[] }) {
+    const router = useRouter()
+    const handleEdit = (id: string) => {
+        console.log(`edit ${id}`)
+        fetch(`http://localhost:3000/api/users/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify({
+                role: 'admin'
+            })
+        })
+        router.refresh()
+    }
+    const handleDelete = (id: string) => {
+        console.log(`delete ${id}`)
+        fetch(`http://localhost:3000/api/users/${id}`, {
+            method: 'DELETE',
+        })
+        router.refresh()
+    }
     
     return (
         <div className="px-4 sm:px-6 lg:px-8">
@@ -59,14 +78,20 @@ export default function UserTable({ user }: { user: IUser[]}) {
                                             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.email}</td>
                                             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.role}</td>
                                             <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                                                <a href="#" className="text-indigo-600 hover:text-indigo-900">
+                                                <button
+                                                    type="button"
+                                                    onClick={() => handleEdit(person.id)}
+                                                    className="text-indigo-600 hover:text-indigo-900">
                                                     Edit<span className="sr-only">, {person.name}</span>
-                                                </a>
+                                                </button>
                                             </td>
                                             <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                                                <a href="#" className="text-red-600 hover:text-red-900">
+                                                <button
+                                                    type="button"
+                                                    onClick={() => handleDelete(person.id)}
+                                                    className="text-red-600 hover:text-red-900">
                                                     Delete<span className="sr-only">, {person.name}</span>
-                                                </a>
+                                                </button>
                                             </td>
                                         </tr>
                                     ))}

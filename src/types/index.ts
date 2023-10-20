@@ -7,6 +7,7 @@ type IService = {
     category: string;
     date: string;
     status: string;
+    email: string;
     createdAt: string;
     updatedAt: string;
 };

@@ -1,24 +1,19 @@
 'use client'
+import { IService } from "@/types"
+import { useSession } from "next-auth/react"
 import { useForm, SubmitHandler } from "react-hook-form"
 
-type Inputs = {
-    name: string
-    price: string
-    date: string
-    category: string
-    status: string
-    image: string
-    description: string
-}
-
 export default function AddService() {
-
+    const { data: session } = useSession()
+    console.log(session?.user)
+    const email = session?.user?.email as string;
+    console.log(email)
     const {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<Inputs>()
-    const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    } = useForm<IService>()
+    const onSubmit: SubmitHandler<IService> = async (data) => {
         console.log(data)
         const formData = new FormData();
         formData.append('image', data.image[ 0 ]);
@@ -31,6 +26,7 @@ export default function AddService() {
             .then((result) => {
                 const image = result.data.display_url;
                 data.image = image;
+                data.email = session?.user?.email as string;
                 data.date = new Date(data.date).toISOString();
                 fetch('http://localhost:3000/api/products', {
                     method: 'POST',
