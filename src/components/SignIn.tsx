@@ -21,12 +21,10 @@ export default function SignIn() {
     const password = watch("password")
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         console.log(data)
-        fetch("http://localhost:3000/api/auth/signin", {
-            method: "POST",
-            body: JSON.stringify(data),
-            headers: {
-                "Content-Type": "application/json",
-            },
+        signIn("credentials", {
+            email: data.email,
+            password: data.password,
+            callbackUrl: "http://localhost:3000/",
         })
     }
 
@@ -98,10 +96,6 @@ export default function SignIn() {
                         <div>
                             <button
                                 type="submit"
-                                onClick={() => {
-                                    signIn("credentials")
-                                    router.back()
-                                }}
                                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                             >
                                 Sign In

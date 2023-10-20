@@ -1,6 +1,6 @@
 import { db } from "@/db/script";
 
-export async function PUT(
+export async function PATCH(
   request: Request,
   { params }: { params: { id: string } }
 ) {

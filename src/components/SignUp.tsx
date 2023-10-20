@@ -9,6 +9,7 @@ type Inputs = {
     name: string
     email: string
     password: string
+    role: string
 }
 
 export default function SignUp() {
@@ -22,7 +23,7 @@ export default function SignUp() {
     } = useForm<Inputs>()
     const password = watch("password")
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-        // console.log(data)
+        data.role = "user"
         fetch("http://localhost:3000/api/auth/signup", {
             method: "POST",
             body: JSON.stringify(data),
@@ -30,7 +31,6 @@ export default function SignUp() {
                 "Content-Type": "application/json",
             },
         })
-        // router.push("/signin");
     }
 
     return (

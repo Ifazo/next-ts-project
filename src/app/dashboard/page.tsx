@@ -1,19 +1,15 @@
-import Dashboard from '@/components/Dashboard'
+import UserTable from '@/components/UserTable'
 
-async function getUser() {
+export default async function page() {
   const res = await fetch('http://localhost:3000/api/users', { cache: 'no-cache' })
   if (!res.ok) {
     throw new Error('Failed to fetch data')
   }
-  return res.json()
-}
-
-export default async function page() {
-  const user = await getUser()
-  console.log(user)
+  const data = await res.json()
+  // console.log(data)
   return (
       <div>
-      <Dashboard user={user}/>
+      <UserTable data={data} />
     </div>
   )
 }

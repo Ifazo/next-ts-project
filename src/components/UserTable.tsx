@@ -1,32 +1,35 @@
+'use client'
 import { IUser } from "@/types"
-import { useRouter } from "next/navigation"
 
-/* This example requires Tailwind CSS v2.0+ */
-const people = [
-    { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com', role: 'Member' },
-    // More people...
-]
+export default function UserTable({ data }: { data: IUser[] }) {
 
-export default function UserTable({ user }: { user: IUser[] }) {
-    const router = useRouter()
-    const handleEdit = (id: string) => {
+    const handleEdit = (id: string, user: IUser) => {
         console.log(`edit ${id}`)
         fetch(`http://localhost:3000/api/users/${id}`, {
-            method: 'PUT',
+            method: 'PATCH',
+            cache: 'no-cache',
             body: JSON.stringify({
+                ...user,
                 role: 'admin'
-            })
+
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            },
         })
-        router.refresh()
+            .then(res => res.json())
+            .then(data => console.log(data))
     }
     const handleDelete = (id: string) => {
         console.log(`delete ${id}`)
         fetch(`http://localhost:3000/api/users/${id}`, {
             method: 'DELETE',
+            cache: 'no-cache'
         })
-        router.refresh()
+            .then(res => res.json())
+            .then(data => console.log(data))
     }
-    
+
     return (
         <div className="px-4 sm:px-6 lg:px-8">
             <div className="sm:flex sm:items-center">
@@ -70,27 +73,27 @@ export default function UserTable({ user }: { user: IUser[] }) {
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-gray-200 bg-white">
-                                    {user.map((person) => (
-                                        <tr key={person.email}>
+                                    {data.map((user) => (
+                                        <tr key={user.email}>
                                             <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                                                {person.name}
+                                                {user.name}
                                             </td>
-                                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.email}</td>
-                                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.role}</td>
+                                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{user.email}</td>
+                                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{user.role}</td>
                                             <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                                                 <button
                                                     type="button"
-                                                    onClick={() => handleEdit(person.id)}
+                                                    onClick={() => handleEdit(user.id, user)}
                                                     className="text-indigo-600 hover:text-indigo-900">
-                                                    Edit<span className="sr-only">, {person.name}</span>
+                                                    Edit<span className="sr-only">, {user.name}</span>
                                                 </button>
                                             </td>
                                             <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                                                 <button
                                                     type="button"
-                                                    onClick={() => handleDelete(person.id)}
+                                                    onClick={() => handleDelete(user.id)}
                                                     className="text-red-600 hover:text-red-900">
-                                                    Delete<span className="sr-only">, {person.name}</span>
+                                                    Delete<span className="sr-only">, {user.name}</span>
                                                 </button>
                                             </td>
                                         </tr>

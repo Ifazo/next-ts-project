@@ -12,8 +12,6 @@ import {
     XIcon,
 } from '@heroicons/react/outline'
 import Image from 'next/image'
-import UserTable from './UserTable'
-import { IUser } from '@/types'
 
 const navigation = [
     { name: 'Dashboard', href: '#', icon: HomeIcon, current: true },
@@ -28,11 +26,11 @@ function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function Dashboard({ user }: { user: IUser[] }) {
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
     const [ sidebarOpen, setSidebarOpen ] = useState(false)
 
     return (
-        <>
+        <section>
             {/*
         This example requires updating your template:
 
@@ -161,6 +159,7 @@ export default function Dashboard({ user }: { user: IUser[] }) {
                             <nav className="mt-5 flex-1 px-2 bg-white space-y-1">
                                 {navigation.map((item) => (
                                     <a
+                                        onClick={() => item.current = true}
                                         key={item.name}
                                         href={item.href}
                                         className={classNames(
@@ -214,18 +213,13 @@ export default function Dashboard({ user }: { user: IUser[] }) {
                     </div>
                     <main className="flex-1">
                         <div className="py-6">
-                            <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-                                <h1 className="text-2xl font-semibold text-gray-900">Dashboard</h1>
-                            </div>
-                            <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
                                 {/* Replace with your content */}
-                                <UserTable user={user} />
+                                {children}
                                 {/* /End replace */}
-                            </div>
                         </div>
                     </main>
                 </div>
             </div>
-        </>
+        </section>
     )
 }

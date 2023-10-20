@@ -9,29 +9,23 @@ import { db } from "@/db/script";
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
-      id: "credentials",
       name: "Credentials",
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials) {
-        if (!credentials) {
-          return null;
-        }
-        const user = await db.user.findUnique({
-          where: {
-            email: credentials.email
-          },
+      async authorize(credentials, req) {
+        const res = await fetch("http://localhost:3000/api/auth/signin", {
+          method: "POST",
+          body: JSON.stringify(credentials),
+          headers: { "Content-Type": "application/json" },
         });
-        if (!user) {
-          return null;
-        }
-        if (user.password === credentials.password) {
+        const user = await res.json();
+        console.log(user);
+        if (res.ok && user) {
           return user;
-        } else {
-          return null;
         }
+        return null;
       },
     }),
     GithubProvider({
