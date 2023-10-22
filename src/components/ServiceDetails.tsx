@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { useAppDispatch } from '@/store/hook'
 import { addProduct } from '@/store/features/cart/cartSlice'
 import { IService } from '@/types'
+import toast from 'react-hot-toast'
 
 const reviews = {
     average: 4,
@@ -57,9 +58,12 @@ function classNames(...classes: string[]) {
 
 export default function ServiceDetails({ data: product }: { data: any }) {
     // console.log(data)
+    const startDate = new Date(product.startDate)
+    const endDate = new Date(product.endDate)
     const dispatch = useAppDispatch()
     const handleAddToCart = (product: IService) => {
-            dispatch(addProduct(product))
+        dispatch(addProduct(product))
+        toast.success('Service added to cart')
     }
 
     return (
@@ -87,9 +91,13 @@ export default function ServiceDetails({ data: product }: { data: any }) {
                                 <h2 id="information-heading" className="sr-only">
                                     Product information
                                 </h2>
-                                <p className="text-sm text-gray-500 mt-2">
-                                    Publish at {' '}
-                                    <time dateTime={product.date}>{product.date}</time>
+                                <p className="text-sm font-medium text-gray-500 mt-2">
+                                    Start at {' '}
+                                    <time dateTime={product.startDate}>{startDate.toLocaleDateString()}</time>
+                                </p>
+                                <p className="text-sm font-medium text-gray-500 mt-2">
+                                    End at {' '}
+                                    <time dateTime={product.endDate}>{endDate.toLocaleDateString()}</time>
                                 </p>
                             </div>
 

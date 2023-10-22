@@ -1,15 +1,15 @@
 type IService = {
-    id: string;
-    name: string;
-    price: string;
-    description: string;
-    image: string;
-    category: string;
-    date: string;
-    status: string;
-    email: string;
-    createdAt: string;
-    updatedAt: string;
+  id: string;
+  name: string;
+  price: string;
+  description: string;
+  image: string;
+  category: string;
+  startDate: string;
+  endDate: string;
+  email: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 type IUser = {

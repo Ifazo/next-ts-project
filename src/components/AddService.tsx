@@ -1,13 +1,14 @@
 'use client'
 import { IService } from "@/types"
 import { useSession } from "next-auth/react"
+import { useRouter } from "next/navigation"
 import { useForm, SubmitHandler } from "react-hook-form"
+import toast from "react-hot-toast"
+import DatePicker from "./DatePicker"
 
 export default function AddService() {
+    const router = useRouter()
     const { data: session } = useSession()
-    console.log(session?.user)
-    const email = session?.user?.email as string;
-    console.log(email)
     const {
         register,
         handleSubmit,
@@ -27,19 +28,22 @@ export default function AddService() {
                 const image = result.data.display_url;
                 data.image = image;
                 data.email = session?.user?.email as string;
-                data.date = new Date(data.date).toISOString();
+                data.startDate = new Date(data.startDate).toISOString();
+                data.endDate = new Date(data.endDate).toISOString();
                 fetch('http://localhost:3000/api/products', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data),
                 })
                     .then((response) => response.json())
-                    .then((result) => {
-                        console.log('Success:', result);
-                        alert('Service added successfully');
+                    .then(() => {
+                        toast.success('Service added successfully');
+                        router.push('/');
+
                     })
-                    .catch((error) => {
-                        console.error('Error:', error);
+                    .catch(() => {
+                        toast.error('Something went wrong!');
+                        router.push('/');
                     });
             })
     }
@@ -69,15 +73,6 @@ export default function AddService() {
                                     {...register("price", { required: true })}
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="$2999" required />
                             </div>
-                            <div className="w-full">
-                                <label htmlFor="date" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date</label>
-                                {errors.date && <small>This field is required</small>}
-                                <input
-                                    type="date"
-                                    {...register("date", { required: true })}
-                                    id="date"
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Product brand" required />
-                            </div>
                             <div>
                                 <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
                                 {errors.category && <small>This field is required</small>}
@@ -92,7 +87,33 @@ export default function AddService() {
                                     <option value="Phone">Phone</option>
                                 </select>
                             </div>
-                            <div>
+
+                            <div className="w-full">
+                                <label htmlFor="start-date" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date</label>
+                                {/* {errors.date && <small>This field is required</small>} */}
+                                <div id="start-date" {...register("startDate", { required: true })} >
+                                    <DatePicker />
+                                </div>
+                                {/* <input
+                                    type="date"
+                                    {...register("date", { required: true })}
+                                    id="date"
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Product brand" required /> */}
+                            </div>
+
+                            <div className="w-full">
+                                <label htmlFor="end-date" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date</label>
+                                {errors.date && <small>This field is required</small>}
+                                <div id="end-date" {...register("endDate", { required: true })} >
+                                    <DatePicker />
+                                </div>
+                                {/* <input
+                                    type="date"
+                                    {...register("date", { required: true })}
+                                    id="date"
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Product brand" required /> */}
+                            </div>
+                            {/* <div>
                                 <label htmlFor="status" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
                                 {errors.status && <small>This field is required</small>}
                                 <select
@@ -104,7 +125,7 @@ export default function AddService() {
                                     <option value="available">available</option>
                                     <option value="stockout">stockout</option>
                                 </select>
-                            </div>
+                            </div> */}
                             <div className="sm:col-span-2">
                                 <label htmlFor="image" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Upload file</label>
                                 {errors.image && <small>This field is required</small>}
