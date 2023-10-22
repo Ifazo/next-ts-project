@@ -2,7 +2,7 @@
 
 import { Datepicker } from 'flowbite-react';
 
-export default function DatepickerComponent() {
+export default function DatePicker() {
     return (
         <Datepicker />
     )

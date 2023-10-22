@@ -15,18 +15,6 @@ enum Role {
   admin
 }
 
-enum ProductStatus {
-  upcoming
-  available
-  stockout
-}
-
-enum OrderStatus {
-  pending
-  accepted
-  rejected
-}
-
 model User {
   id               String            @id @default(uuid())
   name             String
@@ -38,6 +26,7 @@ model User {
   reviewAndRatings ReviewAndRating[]
   orders           Order[]
   products         Product[]
+  wishlists        Wishlist[]
 
   @@map("users")
 }
@@ -67,6 +56,8 @@ model Product {
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
   reviewAndRatings ReviewAndRating[]
+  wishlists        Wishlist[]
+  orders           Order[]
 
   @@map("products")
 }
@@ -86,13 +77,25 @@ model ReviewAndRating {
 }
 
 model Order {
-  id           String      @id @default(uuid())
-  user         String
-  users        User        @relation(fields: [user], references: [id])
-  status       OrderStatus @default(pending)
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
-  orderedBooks Json[]
+  id        String   @id @default(uuid())
+  user      String
+  users     User     @relation(fields: [user], references: [email])
+  product   String
+  products  Product  @relation(fields: [product], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("orders")
+}
+
+model Wishlist {
+  id        String   @id @default(uuid())
+  user      String
+  users     User     @relation(fields: [user], references: [email])
+  product   String
+  products  Product  @relation(fields: [product], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("wishlists")
 }

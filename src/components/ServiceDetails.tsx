@@ -3,10 +3,9 @@ import { Fragment } from 'react'
 import { StarIcon } from '@heroicons/react/solid'
 import { Tab } from '@headlessui/react'
 import Image from 'next/image'
-import { useAppDispatch } from '@/store/hook'
-import { addProduct } from '@/store/features/cart/cartSlice'
 import { IService } from '@/types'
 import toast from 'react-hot-toast'
+import { useSession } from 'next-auth/react'
 
 const reviews = {
     average: 4,
@@ -57,13 +56,35 @@ function classNames(...classes: string[]) {
 }
 
 export default function ServiceDetails({ data: product }: { data: any }) {
-    // console.log(data)
+    const { data: session } = useSession()
     const startDate = new Date(product.startDate)
     const endDate = new Date(product.endDate)
-    const dispatch = useAppDispatch()
-    const handleAddToCart = (product: IService) => {
-        dispatch(addProduct(product))
-        toast.success('Service added to cart')
+
+    const handleOrder = (product: IService) => {
+        fetch(`http://localhost:3000/api/orders`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                user: session?.user?.email,
+                product: product.id,
+            })
+        })
+        toast.success('Order success')
+    }
+    const handleWishlist = (product: IService) => {
+        fetch(`http://localhost:3000/api/wishlist`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                user: session?.user?.email,
+                product: product.id,
+            })
+        })
+        toast.success('Service added to wishlist')
     }
 
     return (
@@ -123,13 +144,14 @@ export default function ServiceDetails({ data: product }: { data: any }) {
                         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
                             <button
                                 type="button"
+                                onClick={() => handleOrder(product)}
                                 className="w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
                             >
                                 Book now ${product.price}
                             </button>
                             <button
                                 type="button"
-                                onClick={() => handleAddToCart(product)}
+                                onClick={() => handleWishlist(product)}
                                 className="w-full bg-indigo-50 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-indigo-700 hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
                             >
                                 Add cart

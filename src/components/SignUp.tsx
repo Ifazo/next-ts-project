@@ -20,10 +20,10 @@ export default function SignUp() {
         watch,
         formState: { errors },
     } = useForm<Inputs>()
-    const password = watch("password")
+    // const password = watch("password")
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         data.role = "user"
-        fetch("http://localhost:3000/api/auth/signup", {
+        fetch("/api/auth/signup", {
             method: "POST",
             body: JSON.stringify(data),
             headers: {
@@ -135,7 +135,7 @@ export default function SignUp() {
                             type="button"
                             onClick={() => {
                                 signIn("google", {
-                                    callbackUrl: "http://localhost:3000/",
+                                    callbackUrl: "/",
                                 }).then(() => {
                                     toast.success("Signed in successfully")
                                 }).catch(() => {
@@ -152,7 +152,7 @@ export default function SignUp() {
                             type="button"
                             onClick={() => {
                                 signIn("github", {
-                                    callbackUrl: "http://localhost:3000/",
+                                    callbackUrl: "/",
                                 }).then(() => {
                                     toast.success("Signed in successfully")
                                 }).catch(() => {

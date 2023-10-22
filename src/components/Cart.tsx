@@ -111,10 +111,11 @@ export default function Cart({ openCart, setOpenCart }: { openCart: boolean, set
                                                                             </h3>
                                                                             <p className="ml-4">${product.price}</p>
                                                                         </div>
-                                                                        <p className="mt-1 text-sm text-gray-500">{product.status}</p>
+                                                                        <p className="mt-1 text-sm text-gray-500">{product.startDate}</p>
+                                                                        <p className="mt-1 text-sm text-gray-500">{product.endDate}</p>
                                                                     </div>
                                                                     <div className="flex flex-1 items-end justify-between text-sm">
-                                                                        <p className="text-gray-500">Qty {product.date}</p>
+                                                                        <p className="text-gray-500">upcoming</p>
 
                                                                         <div className="flex">
                                                                             <button

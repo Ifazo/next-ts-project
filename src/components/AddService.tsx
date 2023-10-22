@@ -30,7 +30,7 @@ export default function AddService() {
                 data.email = session?.user?.email as string;
                 data.startDate = new Date(data.startDate).toISOString();
                 data.endDate = new Date(data.endDate).toISOString();
-                fetch('http://localhost:3000/api/products', {
+                fetch('/api/products', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data),
@@ -90,7 +90,7 @@ export default function AddService() {
 
                             <div className="w-full">
                                 <label htmlFor="start-date" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date</label>
-                                {/* {errors.date && <small>This field is required</small>} */}
+                                {errors.startDate && <small>This field is required</small>}
                                 <div id="start-date" {...register("startDate", { required: true })} >
                                     <DatePicker />
                                 </div>
@@ -103,7 +103,7 @@ export default function AddService() {
 
                             <div className="w-full">
                                 <label htmlFor="end-date" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date</label>
-                                {errors.date && <small>This field is required</small>}
+                                {errors.endDate && <small>This field is required</small>}
                                 <div id="end-date" {...register("endDate", { required: true })} >
                                     <DatePicker />
                                 </div>

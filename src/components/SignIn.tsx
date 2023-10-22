@@ -18,12 +18,12 @@ export default function SignIn() {
         watch,
         formState: { errors },
     } = useForm<Inputs>()
-    const password = watch("password")
+    // const password = watch("password")
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         signIn("credentials", {
             email: data.email,
             password: data.password,
-            callbackUrl: "http://localhost:3000/",
+            callbackUrl: "/",
         })
             .then(() => {
                 toast.success("Logged in successfully")
@@ -130,7 +130,7 @@ export default function SignIn() {
                             type="button"
                             onClick={() => {
                                 signIn("github", {
-                                    callbackUrl: "http://localhost:3000/",
+                                    callbackUrl: "/",
                                 }).then(() => {
                                     toast.success("Github Logged in successfully")
                                 }).catch(() => {

@@ -1,9 +1,7 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
-import GithubProvider from "next-auth/providers/github";
-import GoogleProvider from "next-auth/providers/google";
+import GithubProvider, { GithubProfile } from "next-auth/providers/github";
+import GoogleProvider, { GoogleProfile } from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { GithubProfile } from "next-auth/providers/github";
-import { GoogleProfile } from "next-auth/providers/google";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -14,7 +12,7 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-        const res = await fetch("http://localhost:3000/api/auth/signin", {
+        const res = await fetch("/api/auth/signin", {
           method: "POST",
           body: JSON.stringify(credentials),
           headers: { "Content-Type": "application/json" },
