@@ -20,8 +20,8 @@ const navigation = [
     { name: 'Users', icon: UsersIcon, href: '/dashboard/users', current: false },
     { name: 'Services', icon: CalendarIcon, href: '/dashboard/services', current: false },
     { name: 'Orders', icon: FolderIcon, href: '/dashboard/orders', current: false },
-    { name: 'Wishlist', icon: InboxIcon, href: '/dashboard', current: false },
-    { name: 'Reviews', icon: ChartBarIcon, href: '/dashboard', current: false },
+    { name: 'Wishlist', icon: InboxIcon, href: '/dashboard/wishlist', current: false },
+    { name: 'Reviews', icon: ChartBarIcon, href: '/dashboard/reviews', current: false },
 ]
 
 function classNames(...classes: string[]) {
