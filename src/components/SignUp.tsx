@@ -22,7 +22,6 @@ export default function SignUp() {
     } = useForm<Inputs>()
     // const password = watch("password")
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-        data.role = "user"
         fetch("/api/auth/signup", {
             method: "POST",
             body: JSON.stringify(data),

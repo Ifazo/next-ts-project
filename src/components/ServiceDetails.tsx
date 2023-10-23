@@ -68,7 +68,7 @@ export default function ServiceDetails({ data: product }: { data: any }) {
             },
             body: JSON.stringify({
                 user: session?.user?.email,
-                product: product.id,
+                products: [product],
             })
         })
         toast.success('Order success')
@@ -81,7 +81,7 @@ export default function ServiceDetails({ data: product }: { data: any }) {
             },
             body: JSON.stringify({
                 user: session?.user?.email,
-                product: product.id,
+                product: product,
             })
         })
         toast.success('Service added to wishlist')
@@ -154,7 +154,7 @@ export default function ServiceDetails({ data: product }: { data: any }) {
                                 onClick={() => handleWishlist(product)}
                                 className="w-full bg-indigo-50 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-indigo-700 hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
                             >
-                                Add cart
+                                Add wishlist
                             </button>
                         </div>
                     </div>

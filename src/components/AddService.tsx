@@ -4,7 +4,6 @@ import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { useForm, SubmitHandler } from "react-hook-form"
 import toast from "react-hot-toast"
-import DatePicker from "./DatePicker"
 
 export default function AddService() {
     const router = useRouter()
@@ -91,41 +90,22 @@ export default function AddService() {
                             <div className="w-full">
                                 <label htmlFor="start-date" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date</label>
                                 {errors.startDate && <small>This field is required</small>}
-                                <div id="start-date" {...register("startDate", { required: true })} >
-                                    <DatePicker />
-                                </div>
-                                {/* <input
+                                <input
+                                    id="start-date"
                                     type="date"
-                                    {...register("date", { required: true })}
-                                    id="date"
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Product brand" required /> */}
+                                    {...register("startDate", { required: true })}
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="$2999" required />
                             </div>
 
                             <div className="w-full">
                                 <label htmlFor="end-date" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date</label>
                                 {errors.endDate && <small>This field is required</small>}
-                                <div id="end-date" {...register("endDate", { required: true })} >
-                                    <DatePicker />
-                                </div>
-                                {/* <input
+                                <input
+                                    id="end-date"
                                     type="date"
-                                    {...register("date", { required: true })}
-                                    id="date"
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Product brand" required /> */}
+                                    {...register("endDate", { required: true })}
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="$2999" required />
                             </div>
-                            {/* <div>
-                                <label htmlFor="status" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
-                                {errors.status && <small>This field is required</small>}
-                                <select
-                                    id="status"
-                                    {...register("status", { required: true })}
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                    <option selected disabled>Select status</option>
-                                    <option value="upcoming">upcoming</option>
-                                    <option value="available">available</option>
-                                    <option value="stockout">stockout</option>
-                                </select>
-                            </div> */}
                             <div className="sm:col-span-2">
                                 <label htmlFor="image" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Upload file</label>
                                 {errors.image && <small>This field is required</small>}

@@ -1,3 +1,13 @@
+type IUser = {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+  role: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
 type IService = {
   id: string;
   name: string;
@@ -12,14 +22,16 @@ type IService = {
   updatedAt: string;
 };
 
-type IUser = {
-    id: string;
-    name: string;
-    email: string;
-    password: string;
-    role: string;
-    createdAt: string;
-    updatedAt: string;
+type IOrder = {
+  id: string;
+  user: string;
+  products: IService[];
 };
 
-export type { IService, IUser };
+type IWishList = {
+  id: string;
+  user: string;
+  product: IService;
+};
+
+export type { IService, IUser, IOrder, IWishList };

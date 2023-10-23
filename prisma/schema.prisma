@@ -56,8 +56,6 @@ model Product {
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
   reviewAndRatings ReviewAndRating[]
-  wishlists        Wishlist[]
-  orders           Order[]
 
   @@map("products")
 }
@@ -80,8 +78,7 @@ model Order {
   id        String   @id @default(uuid())
   user      String
   users     User     @relation(fields: [user], references: [email])
-  product   String
-  products  Product  @relation(fields: [product], references: [id])
+  products  Json[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -92,8 +89,7 @@ model Wishlist {
   id        String   @id @default(uuid())
   user      String
   users     User     @relation(fields: [user], references: [email])
-  product   String
-  products  Product  @relation(fields: [product], references: [id])
+  product   Json
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
