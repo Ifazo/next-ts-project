@@ -4,12 +4,10 @@ import { Dialog, Popover, Tab, Transition } from "@headlessui/react";
 import {
     MenuIcon,
     SearchIcon,
-    ShoppingBagIcon,
     UserIcon,
     XIcon,
 } from "@heroicons/react/outline";
 import Image from "next/image";
-import Cart from "./Cart";
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react"
 import { toast } from "react-hot-toast";
@@ -92,7 +90,6 @@ export default function Header() {
     const { data: session } = useSession()
     console.log(session)
     const [ open, setOpen ] = useState(false);
-    const [ openCart, setOpenCart ] = useState(false)
 
     return (
         <div className="bg-white">
@@ -294,21 +291,6 @@ export default function Header() {
                                     <span className="sr-only">Account</span>
                                     <UserIcon className="w-6 h-6" aria-hidden="true" />
                                 </Link>
-
-                                {/* Cart */}
-                                <div className="ml-4 flow-root lg:ml-6">
-                                    <button
-                                        type="button"
-                                        onClick={() => setOpenCart(true)}
-                                        className="group -m-2 p-2 flex items-center">
-                                        <ShoppingBagIcon
-                                            className="flex-shrink-0 h-6 w-6 text-gray-400 group-hover:text-gray-500"
-                                            aria-hidden="true"
-                                        />
-                                        <span className="sr-only">items in cart, view bag</span>
-                                    </button>
-                                    <Cart openCart={openCart} setOpenCart={setOpenCart} />
-                                </div>
 
                                 {/* Auth */}
                                 <div className="ml-4 flow-root lg:ml-6">

@@ -22,6 +22,18 @@ type IService = {
   updatedAt: string;
 };
 
+type IReview = {
+  id: string;
+  rating: string;
+  review: string;
+  name: string;
+  image: string;
+  email: string;
+  product: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 type IOrder = {
   id: string;
   user: string;
@@ -34,4 +46,4 @@ type IWishList = {
   product: IService;
 };
 
-export type { IService, IUser, IOrder, IWishList };
+export type { IService, IReview, IUser, IOrder, IWishList };

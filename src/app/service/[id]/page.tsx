@@ -1,3 +1,4 @@
+import Reviews from '@/components/Reviews';
 import ServiceDetails from '@/components/ServiceDetails'
 
 export default async function page({ params: { id } }: { params: { id: string } }) {
@@ -6,10 +7,14 @@ export default async function page({ params: { id } }: { params: { id: string } 
     cache: 'no-store'
   })
   const data = await res.json()
-  
+  const response = await fetch(`${url}/api/reviews`, {
+    cache: 'no-store'
+  })
+  const reviews = await response.json()
   return (
-    <div>
+    <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
       <ServiceDetails data={data}/>
+      <Reviews data={reviews}/>
     </div>
   )
 }

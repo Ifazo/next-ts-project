@@ -1,9 +1,15 @@
-import NextAuth, { NextAuthOptions } from "next-auth";
+import nextAuth, { NextAuthOptions } from "next-auth";
 import GithubProvider, { GithubProfile } from "next-auth/providers/github";
 import GoogleProvider, { GoogleProfile } from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import { PrismaClient } from "@prisma/client";
+import { db } from "@/db/script";
+
+const prisma = new PrismaClient();
 
 export const authOptions: NextAuthOptions = {
+  adapter: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -11,15 +17,14 @@ export const authOptions: NextAuthOptions = {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials, req) {
-        const res = await fetch("/api/auth/signin", {
-          method: "POST",
-          body: JSON.stringify(credentials),
-          headers: { "Content-Type": "application/json" },
+      async authorize(credentials) {
+        const user = await db.user.findUnique({
+          where: { email: credentials?.email },
         });
-        const user = await res.json();
-        console.log(user);
-        if (res.ok && user) {
+        console.log(user, credentials);
+        if (!user) {
+          return null;
+        } else if (user?.password === credentials?.password) {
           return user;
         }
         return null;
@@ -35,6 +40,7 @@ export const authOptions: NextAuthOptions = {
           name: profile.name,
           email: profile.email,
           image: profile.avatar_url,
+          emailVerified: true,
           role: "user",
         };
       },
@@ -47,8 +53,9 @@ export const authOptions: NextAuthOptions = {
         return {
           id: profile.sub,
           name: profile.name,
-          email: profile.email,
           image: profile.picture,
+          email: profile.email,
+          emailVerified: true,
           role: "user",
         };
       },
@@ -57,6 +64,6 @@ export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET as string,
 };
 
-const handler = NextAuth(authOptions);
+const handler = nextAuth(authOptions);
 
 export { handler as GET, handler as POST };
