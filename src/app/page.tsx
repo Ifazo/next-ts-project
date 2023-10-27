@@ -6,7 +6,7 @@ import Testimonial from '@/components/Testimonial'
 import Trending from '@/components/Trending'
 import Upcoming from '@/components/Upcoming'
 
-export default function Home() {
+export default async function Home() {
   return (
     <main>
       <Hero />

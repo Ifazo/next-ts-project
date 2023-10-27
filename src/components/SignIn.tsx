@@ -11,23 +11,22 @@ type Inputs = {
 }
 
 export default function SignIn() {
-
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm<Inputs>()
     // const password = watch("password")
-    const onSubmit: SubmitHandler<Inputs> = (data) => {
-        signIn("credentials", {
+    const onSubmit: SubmitHandler<Inputs> = async (data) => {
+        await signIn("credentials", {
             email: data.email,
             password: data.password,
             callbackUrl: '/'
-        }).then((res) => {
-            if (res?.ok) {
-                toast.success("Logged in successfully")
-            }
-        }).catch(() => {
+        }).then(res => {
+            console.log(res)
+            toast.success("Logged in successfully")
+        }).catch(err => {
+            console.log(err)
             toast.error("Failed to login")
         })
     }
@@ -147,7 +146,7 @@ export default function SignIn() {
                     <p className="mt-10 text-center text-sm text-gray-500">
                         Not a member?{' '}
                         <Link
-                            href="/signup"
+                            href="/auth/signup"
                             className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
                             Create an account
                         </Link>

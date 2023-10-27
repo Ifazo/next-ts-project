@@ -14,7 +14,6 @@ export default function AddService() {
         formState: { errors },
     } = useForm<IService>()
     const onSubmit: SubmitHandler<IService> = async (data) => {
-        console.log(data)
         const formData = new FormData();
         formData.append('image', data.image[ 0 ]);
         const imgApi = "187d3aec661ecb2f9b3fa1a76eab6014";

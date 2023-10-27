@@ -31,7 +31,7 @@ function classNames(...classes: string[]) {
 }
 
 export default function Reviews({ data }: { data: IReview[] }) {
-    console.log(data)
+    // console.log(data)
     return (
         <div className="bg-white my-10">
             <div>

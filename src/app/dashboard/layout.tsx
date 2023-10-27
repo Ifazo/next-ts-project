@@ -31,7 +31,6 @@ function classNames(...classes: string[]) {
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
     const [ sidebarOpen, setSidebarOpen ] = useState(false)
     const { data: session } = useSession()
-    console.log(session)
     return (
         <section>
             {/*

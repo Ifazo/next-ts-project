@@ -1,4 +1,5 @@
 import { db } from "@/db/script";
+import jwt, { Secret } from "jsonwebtoken";
 
 export async function POST(request: Request) {
   const data = await request.json();
@@ -11,7 +12,15 @@ export async function POST(request: Request) {
   if (!user) {
     return new Response("User does not exist", { status: 400 });
   }
-  return new Response(JSON.stringify(user), {
-    headers: { "content-type": "application/json" },
+  if (user.password !== data.password) {
+    return new Response("Password is incorrect", { status: 400 });
+  }
+  const payload = { id: user.id, email: user.email, role: user.role };
+  const secret = process.env.NEXTAUTH_SECRET as Secret;
+  const token = jwt.sign(payload, secret);
+  return new Response(token, {
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
 }

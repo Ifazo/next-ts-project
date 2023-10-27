@@ -15,7 +15,7 @@ export default function ReviewModal({ id, open, setOpen }: { id: string, open: b
         data.image = session?.user?.image as string;
         data.email = session?.user?.email as string;
         data.product = id;
-        console.log(data)
+        // console.log(data)
         fetch('/api/reviews', {
             method: 'POST',
             headers: {

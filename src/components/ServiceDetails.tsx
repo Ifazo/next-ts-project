@@ -12,7 +12,7 @@ function classNames(...classes: string[]) {
 }
 
 export default function ServiceDetails({ data: product }: { data: IService }) {
-    console.log(product)
+    // console.log(product)
     const [ open, setOpen ] = useState(false)
     const { data: session } = useSession()
     const startDate = new Date(product.startDate)

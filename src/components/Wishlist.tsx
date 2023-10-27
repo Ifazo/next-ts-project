@@ -35,7 +35,7 @@ export default function Wishlist({ data }: { data: any }) {
     const products = data.map((item: any) => {
         return item.product
     })
-    console.log(products)
+    // console.log(products)
     return (
         <div className="bg-white">
             <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-0">

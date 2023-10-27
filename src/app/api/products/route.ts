@@ -9,7 +9,6 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
     const data = await request.json();
-    console.log(data)
     if (!data) {
       return new Response("Request body is required", { status: 400 });
     }

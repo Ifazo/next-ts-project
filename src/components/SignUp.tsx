@@ -30,11 +30,11 @@ export default function SignUp() {
             },
         })
             .then(() => {
-                toast.success("Signed up successfully")
-                router.push("/signin")
+                toast.success("Signed up user successfully")
+                router.push("/auth/signin")
             })
             .catch(() => {
-                toast.error("Failed to sign up")
+                toast.error("Failed to user sign up")
             })
     }
 
@@ -170,7 +170,7 @@ export default function SignUp() {
                     <p className="mt-10 text-center text-sm text-gray-500">
                         Already have an account!{' '}
                         <Link
-                            href="/signin"
+                            href="/auth/signin"
                             className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
                             Log in
                         </Link>
