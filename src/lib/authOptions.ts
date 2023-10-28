@@ -10,6 +10,7 @@ import { JWT } from "next-auth/jwt";
 const prisma = new PrismaClient();
 
 export const authOptions: AuthOptions = {
+  adapter: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
       id: "credentials",
@@ -28,14 +29,14 @@ export const authOptions: AuthOptions = {
               "Content-Type": "application/json",
             },
           });
-          const data = await res.json();
+          const data = await res.text();
           console.log(data);
           const secret = process.env.NEXTAUTH_SECRET as Secret;
-          const token = jwt.verify(data, secret);
+          const token = jwt.verify(data, secret) as any;
           console.log(token);
           return token;
         } catch (err) {
-          console.log(err)
+          console.log(err);
         }
       },
     }),
@@ -88,5 +89,4 @@ export const authOptions: AuthOptions = {
     },
   },
   secret: process.env.NEXTAUTH_SECRET as string,
-  adapter: PrismaAdapter(prisma),
 };

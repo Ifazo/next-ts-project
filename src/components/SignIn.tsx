@@ -19,28 +19,18 @@ export default function SignIn() {
     // const password = watch("password")
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         await signIn("credentials", {
-            email: data.email,
-            password: data.password,
+            email: data?.email,
+            password: data?.password,
             callbackUrl: '/'
-        }).then(res => {
-            console.log(res)
+        }).then(() => {
             toast.success("Logged in successfully")
-        }).catch(err => {
-            console.log(err)
+        }).catch(() => {
             toast.error("Failed to login")
         })
     }
 
     return (
         <>
-            {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-white">
-        <body class="h-full">
-        ```
-      */}
             <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                     <Image
@@ -111,7 +101,7 @@ export default function SignIn() {
                             type="button"
                             onClick={() => {
                                 signIn("google", {
-                                    callbackUrl: '/',
+                                    callbackUrl: '/'
                                 }).then(() => {
                                     toast.success("Google Logged in successfully")
                                 }).catch(() => {
@@ -128,7 +118,7 @@ export default function SignIn() {
                             type="button"
                             onClick={() => {
                                 signIn("github", {
-                                    callbackUrl: '/',
+                                    callbackUrl: '/'
                                 }).then(() => {
                                     toast.success("Github Logged in successfully")
                                 }).catch(() => {

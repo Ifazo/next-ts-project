@@ -87,6 +87,8 @@ function classNames(...classes: string[]) {
 }
 
 export default function Header({ session }: { session: any }) {
+    const { data } = useSession()
+    console.log(data)
     const [ open, setOpen ] = useState(false);
 
     return (

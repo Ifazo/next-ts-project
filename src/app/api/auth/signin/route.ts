@@ -7,7 +7,9 @@ export async function POST(request: Request) {
     return new Response("Request body is required", { status: 400 });
   }
   const user = await db.user.findUnique({
-    where: { email: data.email },
+    where: {
+      email: data.email,
+    },
   });
   if (!user) {
     return new Response("User does not exist", { status: 400 });
@@ -17,10 +19,9 @@ export async function POST(request: Request) {
   }
   const payload = { id: user.id, email: user.email, role: user.role };
   const secret = process.env.NEXTAUTH_SECRET as Secret;
-  const token = jwt.sign(payload, secret);
-  return new Response(token, {
-    headers: {
-      "Content-Type": "application/json",
-    },
+  const token = jwt.sign(payload, secret, { expiresIn: "1d" });
+  const response = new Response(JSON.stringify({ token }), {
+    headers: { "content-type": "application/json" },
   });
+  return response;
 }
