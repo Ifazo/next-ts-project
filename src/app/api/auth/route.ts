@@ -19,7 +19,7 @@ export async function POST(request: Request) {
   }
   const payload = { id: user.id, email: user.email, role: user.role };
   const secret = process.env.NEXTAUTH_SECRET as Secret;
-  const token = jwt.sign(payload, secret, { expiresIn: "1d" });
+  const token = jwt.sign(payload, secret, { expiresIn: "24h" });
   const response = new Response(JSON.stringify({ token }), {
     headers: { "content-type": "application/json" },
   });

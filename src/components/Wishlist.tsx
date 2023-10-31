@@ -3,33 +3,6 @@ import { IService, IWishList } from '@/types'
 import { CheckIcon, ClockIcon } from '@heroicons/react/solid'
 import Image from 'next/image'
 
-const products = [
-    {
-        id: 1,
-        name: 'Artwork Tee',
-        href: '#',
-        price: '$32.00',
-        color: 'Mint',
-        size: 'Medium',
-        inStock: true,
-        imageSrc: 'https://tailwindui.com/img/ecommerce-images/checkout-page-03-product-04.jpg',
-        imageAlt: 'Front side of mint cotton t-shirt with wavey lines pattern.',
-    },
-    {
-        id: 2,
-        name: 'Basic Tee',
-        href: '#',
-        price: '$32.00',
-        color: 'Charcoal',
-        inStock: false,
-        leadTime: '7-8 years',
-        size: 'Large',
-        imageSrc: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-01-product-02.jpg',
-        imageAlt: 'Front side of charcoal cotton t-shirt.',
-    },
-    // More products...
-]
-
 export default function Wishlist({ data }: { data: any }) {
     // console.log(data)
     const products = data.map((item: any) => {

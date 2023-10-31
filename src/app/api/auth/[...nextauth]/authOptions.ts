@@ -2,9 +2,16 @@ import { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
-import jwt, { JwtPayload } from "jsonwebtoken";
+import jwt, { JwtPayload, Secret } from "jsonwebtoken";
+import { PrismaClient } from "@prisma/client";
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import { refreshToken } from "@/utils/refreshToken";
+
+// const prisma = new PrismaClient();
 
 export const authOptions: AuthOptions = {
+  //! Do not use PrismaAdapter, it shows callback error
+  // adapter: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
       id: "credentials",
@@ -14,25 +21,25 @@ export const authOptions: AuthOptions = {
         username: { label: "Email", type: "email", placeholder: "Your E-mail" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials, req) {
-        const res = await fetch("http://localhost:3000/api/auth/signin", {
-          method: "POST",
-          body: JSON.stringify(credentials),
-          headers: { "Content-Type": "application/json" },
-        });
-        const data = await res.json();
-        const token = jwt.verify(
-          data?.token,
-          process.env.NEXTAUTH_SECRET as string
-        ) as JwtPayload;
-        console.log(token);
-        if (res.ok && data) {
+      async authorize(credentials) {
+        try {
+          const res = await fetch(`${process.env.NEXTAUTH_URL}/api/auth`, {
+            method: "POST",
+            body: JSON.stringify(credentials),
+            headers: { "Content-Type": "application/json" },
+          });
+          const data = await res.json();
+          const token = jwt.verify(
+            data?.token,
+            process.env.NEXTAUTH_SECRET as Secret
+          ) as JwtPayload;
           return {
             ...data,
             ...token,
           };
+        } catch (err) {
+          return null;
         }
-        return null;
       },
     }),
     GithubProvider({
@@ -46,14 +53,22 @@ export const authOptions: AuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user }) {
-      console.log(token, user);
       return {
         ...token,
         ...user,
       };
     },
     async session({ session, token }) {
-      console.log(session, token)
+      // const varifyToken = jwt.verify(
+      //   token?.token as string,
+      //   process.env.NEXTAUTH_SECRET as Secret
+      // ) as JwtPayload;
+      // if (!varifyToken) {
+      //   console.log("token expired so new token generated");
+      //   const data = await refreshToken(token?.token as string);
+      //   console.log(data)
+      //   token.token = data?.token;
+      // }
       return {
         ...session,
         ...token,

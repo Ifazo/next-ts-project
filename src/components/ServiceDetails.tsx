@@ -19,7 +19,7 @@ export default function ServiceDetails({ data: product }: { data: IService }) {
     const endDate = new Date(product.endDate)
 
     const handleOrder = (product: IService) => {
-        fetch(`http://localhost:3000/api/orders`, {
+        fetch(`${process.env.NEXTAUTH_URL}/api/orders`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -29,10 +29,16 @@ export default function ServiceDetails({ data: product }: { data: IService }) {
                 products: [ product ],
             })
         })
-        toast.success('Order success')
+            .then(res => res.json())
+            .then(data => {
+                toast.success('Order placed successfully')
+            })
+            .catch(err => {
+                toast.error('Something went wrong')
+            })
     }
     const handleWishlist = (product: IService) => {
-        fetch(`http://localhost:3000/api/wishlist`, {
+        fetch(`${process.env.NEXTAUTH_URL}/api/wishlist`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -42,7 +48,13 @@ export default function ServiceDetails({ data: product }: { data: IService }) {
                 product: product,
             })
         })
-        toast.success('Service added to wishlist')
+            .then(res => res.json())
+            .then(data => {
+                toast.success('Added to wishlist')
+            })
+            .catch(err => {
+                toast.error('Something went wrong')
+            })
     }
 
     return (
@@ -138,9 +150,9 @@ export default function ServiceDetails({ data: product }: { data: IService }) {
                             >
                                 Write a review
                             </button>
-                            <ReviewModal open={open} setOpen={setOpen} id={product.id}/>
+                            <ReviewModal open={open} setOpen={setOpen} id={product.id} />
                         </div>
-                    
+
                     </div>
 
                 </div>
