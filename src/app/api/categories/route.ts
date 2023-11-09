@@ -1,4 +1,4 @@
-import { db } from "@/db/script";
+import { db } from "@/db";
 
 export async function POST(request: Request) {
   const data = await request.json();

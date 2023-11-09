@@ -1,4 +1,4 @@
-import { db } from "@/db/script";
+import { db } from "@/db";
 import jwt, { Secret } from "jsonwebtoken";
 
 export async function POST(request: Request) {

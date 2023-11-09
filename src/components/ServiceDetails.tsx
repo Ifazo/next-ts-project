@@ -6,17 +6,19 @@ import { useSession } from 'next-auth/react'
 import toast from 'react-hot-toast'
 import { useState } from 'react'
 import ReviewModal from './ReviewModal'
+import CalenderModal from './CalenderModal'
 
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
 }
 
 export default function ServiceDetails({ data: product }: { data: IService }) {
-    // console.log(product)
+
+    const [ openModal, setOpenModal ] = useState(false)
     const [ open, setOpen ] = useState(false)
     const { data: session } = useSession()
-    const startDate = new Date(product.startDate)
-    const endDate = new Date(product.endDate)
+    // const startDate = new Date(product.startDate)
+    // const endDate = new Date(product.endDate)
 
     const handleOrder = (product: IService) => {
         fetch(`${process.env.NEXTAUTH_URL}/api/orders`, {
@@ -62,12 +64,12 @@ export default function ServiceDetails({ data: product }: { data: IService }) {
             <div className="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start">
                 {/* Image gallery */}
                 <div className="w-full aspect-w-1 aspect-h-1">
-                    <Image
+                    {/* <Image
                         layout="fill"
                         src={product.image}
                         alt={product.name}
                         className="w-full h-full object-center object-cover sm:rounded-lg"
-                    />
+                    /> */}
                 </div>
 
                 {/* Product info */}
@@ -109,7 +111,7 @@ export default function ServiceDetails({ data: product }: { data: IService }) {
 
                     <div className="mt-6">
 
-                        <div className="mt-3">
+                        {/* <div className="mt-3">
                             <div className="flex items-center justify-around">
                                 <p className="text-sm font-medium text-gray-500 mt-2">
                                     Start at {' '}
@@ -120,17 +122,17 @@ export default function ServiceDetails({ data: product }: { data: IService }) {
                                     <time dateTime={product.endDate}>{endDate.toLocaleDateString()}</time>
                                 </p>
                             </div>
-                        </div>
+                        </div> */}
 
                         <div className="mt-3 flex sm:flex-col1">
                             <button
                                 type="button"
-                                onClick={() => handleOrder(product)}
+                                onClick={() => setOpenModal(true)}
                                 className="max-w-xs flex-1 bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500 sm:w-full"
                             >
-                                Order Now
+                                Book Now
                             </button>
-
+                            <CalenderModal data={product.id} openModal={openModal} setOpenModal={setOpenModal} />
                             <button
                                 type="button"
                                 onClick={() => handleWishlist(product)}
