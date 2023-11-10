@@ -1,15 +1,18 @@
 "use client";
-import { store } from "@/store/store";
 import { SessionProvider } from "next-auth/react";
-import { Toaster } from "react-hot-toast";
 import { Provider } from "react-redux";
+import { PersistGate } from 'redux-persist/integration/react'
+import { persistStore } from 'redux-persist'
+import { store } from '@/store/store'
 
 export function Providers({ children }: { children: React.ReactNode }) {
+    const persistor = persistStore(store)
     return (
         <SessionProvider>
             <Provider store={store}>
-                {children}
-                <Toaster />
+                <PersistGate loading={null} persistor={persistor}>
+                    {children}
+                </PersistGate>
             </Provider>
         </SessionProvider>
     );

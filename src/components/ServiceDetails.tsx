@@ -71,7 +71,6 @@ export default function ServiceDetails({ data: product }: { data: IService }) {
                         className="w-full h-full object-center object-cover sm:rounded-lg"
                     /> */}
                 </div>
-
                 {/* Product info */}
                 <div className="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0">
                     <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">{product.name}</h1>
@@ -80,7 +79,6 @@ export default function ServiceDetails({ data: product }: { data: IService }) {
                         <h2 className="sr-only">Product information</h2>
                         <p className="text-xl font-medium text-gray-900">${product.price}</p>
                     </div>
-
                     {/* Reviews */}
                     {/* <div className="mt-3">
                         <h3 className="sr-only">Reviews</h3>
@@ -100,7 +98,6 @@ export default function ServiceDetails({ data: product }: { data: IService }) {
                             <p className="sr-only">{product.rating} out of 5 stars</p>
                         </div>
                     </div> */}
-
                     <div className="mt-6">
                         <h3 className="sr-only">Description</h3>
 
@@ -108,22 +105,7 @@ export default function ServiceDetails({ data: product }: { data: IService }) {
                             <p>{product.description}</p>
                         </div>
                     </div>
-
                     <div className="mt-6">
-
-                        {/* <div className="mt-3">
-                            <div className="flex items-center justify-around">
-                                <p className="text-sm font-medium text-gray-500 mt-2">
-                                    Start at {' '}
-                                    <time dateTime={product.startDate}>{startDate.toLocaleDateString()}</time>
-                                </p>
-                                <p className="text-sm font-medium text-gray-500 mt-2">
-                                    End at {' '}
-                                    <time dateTime={product.endDate}>{endDate.toLocaleDateString()}</time>
-                                </p>
-                            </div>
-                        </div> */}
-
                         <div className="mt-3 flex sm:flex-col1">
                             <button
                                 type="button"
@@ -142,7 +124,6 @@ export default function ServiceDetails({ data: product }: { data: IService }) {
                                 <p className='ml-2'>Wishlist</p>
                             </button>
                         </div>
-
                         <div className="mt-3">
                             <h3 className="m-3 text-base text-center font-medium text-gray-900">Share your thoughts</h3>
                             <button
@@ -154,9 +135,7 @@ export default function ServiceDetails({ data: product }: { data: IService }) {
                             </button>
                             <ReviewModal open={open} setOpen={setOpen} id={product.id} />
                         </div>
-
                     </div>
-
                 </div>
             </div>
         </div>
