@@ -6,7 +6,7 @@ import { persistStore } from 'redux-persist'
 import { store } from '@/store/store'
 
 export function Providers({ children }: { children: React.ReactNode }) {
-    const persistor = persistStore(store)
+    const persistor = persistStore(store);
     return (
         <SessionProvider>
             <Provider store={store}>

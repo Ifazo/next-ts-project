@@ -1,34 +1,58 @@
 /* This example requires Tailwind CSS v2.0+ */
 import { Fragment, useRef } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { IReview } from '@/types'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { useSession } from 'next-auth/react'
 import toast from 'react-hot-toast'
+import { useAppSelector } from '@/store/hook'
+import { useRouter } from 'next/navigation'
+
+type IReview = {
+    id: string;
+    rating: number;
+    review: string;
+    user: string;
+    name: string;
+    email: string;
+    image: string;
+    service: string;
+}
 
 export default function ReviewModal({ id, open, setOpen }: { id: string, open: boolean, setOpen: any }) {
-    const { data: session } = useSession()
+    const { user } = useAppSelector(state => state.user)
+    const router = useRouter()
     const cancelButtonRef = useRef(null)
     const { register, handleSubmit, formState: { errors } } = useForm<IReview>()
     const onSubmit: SubmitHandler<IReview> = (data: IReview) => {
-        data.name = session?.user?.name as string;
-        data.image = session?.user?.image as string;
-        data.email = session?.user?.email as string;
-        data.product = id;
-        // console.log(data)
-        fetch('/api/reviews', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        }).then((res) => {
-            if (res.ok) {
-                toast.success('Review submitted')
+        try {
+            if (!user) {
+                toast.error('You must be logged in to submit a review')
+                router.push('/auth/signin')
+                return
             }
-        }).catch(err => {
-            toast.error('Review failed to submit')
-        })
+            const review = {
+                user: user.id,
+                name: user.name,
+                image: user.image,
+                service: id,
+                rating: Number(data.rating),
+                review: data.review,
+            }
+            fetch('http://localhost:5000/api/reviews', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authorization': localStorage.getItem('token') || ''
+                },
+                body: JSON.stringify(review)
+            }).then(() => {
+                toast.success('Review submitted')
+                window.location.reload()
+            }).catch(() => {
+                toast.error('Review failed to submit')
+            })
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     return (

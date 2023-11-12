@@ -9,88 +9,100 @@ datasource db {
 
 enum Role {
   user
-  teacher
   admin
+  super_admin
 }
 
 model User {
-  id            String     @id @default(uuid())
-  email         String    @unique
-  name          String?
-  password      String?
-  image         String?
-  role          Role       @default(user)
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt()
-  reviews       Review[]
-  orders        Order[]
-  products      Product[]
-  wishlists     Wishlist[]
+  id        String     @id @default(uuid())
+  email     String     @unique
+  password  String
+  name      String
+  image     String?
+  role      Role       @default(user)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt()
+  Review    Review[]
+  Booking   Booking[]
+  Wishlist  Wishlist[]
 
   @@map("users")
 }
 
 model Category {
-  id        String    @id @default(uuid())
-  name      String    @unique
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  products  Product[]
+  id          String    @id @default(uuid())
+  name        String    @unique
+  image       String
+  description String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  Service     Service[]
 
   @@map("categories")
 }
 
-model Product {
-  id          String   @id @default(uuid())
-  name        String
+model Service {
+  id          String     @id @default(uuid())
+  name        String     @unique
+  image       String
   description String
   price       String
-  image       String
   startDate   DateTime
   endDate     DateTime
   category    String
-  categories  Category @relation(fields: [category], references: [name])
-  email       String
-  users       User     @relation(fields: [email], references: [email])
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  reviews     Review[]
+  categories  Category   @relation(fields: [category], references: [name])
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  Review      Review[]
+  Booking     Booking[]
+  Wishlist    Wishlist[]
 
-  @@map("products")
+  @@map("services")
 }
 
 model Review {
   id        String   @id @default(uuid())
-  rating    String
+  rating    Int
   review    String
-  name      String
-  image     String
-  email     String
-  users     User     @relation(fields: [email], references: [email])
-  product   String
-  products  Product  @relation(fields: [product], references: [id])
+  user      String
+  users     User     @relation(fields: [user], references: [email])
+  service   String
+  services  Service  @relation(fields: [service], references: [name])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@map("reviews")
 }
 
-model Order {
+model Post {
   id        String   @id @default(uuid())
-  user      String
-  users     User     @relation(fields: [user], references: [email])
-  products  Json[]
+  title     String
+  image     String
+  content   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("orders")
+  @@map("posts")
+}
+
+model Booking {
+  id        String   @id @default(uuid())
+  user      String
+  users     User     @relation(fields: [user], references: [email])
+  service   String
+  services  Service  @relation(fields: [service], references: [name])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("bookings")
 }
 
 model Wishlist {
   id        String   @id @default(uuid())
   user      String
   users     User     @relation(fields: [user], references: [email])
-  product   Json
+  service   String
+  services  Service  @relation(fields: [service], references: [name])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

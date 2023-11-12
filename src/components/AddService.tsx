@@ -1,13 +1,22 @@
 'use client'
-import { IService } from "@/types"
-import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { useForm, SubmitHandler } from "react-hook-form"
 import toast from "react-hot-toast"
 
+type IService = {
+    id: string;
+    name: string;
+    image: string;
+    description: string;
+    price: string;
+    category: string;
+    startDate: string;
+    endDate: string;
+};
+
 export default function AddService() {
     const router = useRouter()
-    const { data: session } = useSession()
+    // const { data: session } = useSession()
     const {
         register,
         handleSubmit,
@@ -25,12 +34,14 @@ export default function AddService() {
             .then((result) => {
                 const image = result.data.display_url;
                 data.image = image;
-                data.email = session?.user?.email as string;
                 data.startDate = new Date(data.startDate).toISOString();
                 data.endDate = new Date(data.endDate).toISOString();
-                fetch('/api/products', {
+                fetch(`http://localhost:5000/api/services`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'authorization': localStorage.getItem('token') || ''
+                    },
                     body: JSON.stringify(data),
                 })
                     .then((response) => response.json())

@@ -3,13 +3,12 @@ import { IUser } from "@/types"
 import { toast } from "react-hot-toast";
 
 export default function UserTable({ data }: { data: IUser[] }) {
-    
+    console.log(data)
     const handleEdit = (id: string, user: IUser) => {
         fetch(`/api/users/${id}`, {
             method: 'PATCH',
             cache: 'no-cache',
             body: JSON.stringify({
-                ...user,
                 role: 'admin'
 
             }),

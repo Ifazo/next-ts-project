@@ -1,7 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface IUser {
-  user: object | null;
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    role: string;
+    image: string;
+  } | null;
 }
 
 const initialState: IUser = {

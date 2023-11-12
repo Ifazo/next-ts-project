@@ -14,14 +14,29 @@ import {
 import Image from 'next/image'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
+import { useAppSelector } from '@/store/hook'
 
 const navigation = [
-    { name: 'Dashboard', icon: HomeIcon, href: '/dashboard', current: false },
-    { name: 'Users', icon: UsersIcon, href: '/dashboard/users', current: false },
-    { name: 'Services', icon: CalendarIcon, href: '/dashboard/services', current: false },
-    { name: 'Orders', icon: FolderIcon, href: '/dashboard/orders', current: false },
-    { name: 'Wishlist', icon: InboxIcon, href: '/dashboard/wishlist', current: false },
-    { name: 'Reviews', icon: ChartBarIcon, href: '/dashboard/reviews', current: false },
+    { name: 'Dashboard', icon: HomeIcon, href: '/dashboard', current: true },
+]
+
+const userNavidation = [
+    { name: 'Dashboard', icon: HomeIcon, href: '/dashboard', current: true },
+    { name: 'Orders', icon: FolderIcon, href: '/dashboard/user/booking', current: true },
+    { name: 'Wishlist', icon: InboxIcon, href: '/dashboard/user/wishlist', current: false },
+    { name: 'Reviews', icon: ChartBarIcon, href: '/dashboard/user/reviews', current: false },
+]
+
+const adminNavidation = [
+    { name: 'Dashboard', icon: HomeIcon, href: '/dashboard', current: true },
+    { name: 'Users', icon: UsersIcon, href: '/dashboard/admin/users', current: true },
+    { name: 'Services', icon: CalendarIcon, href: '/dashboard/admin/services', current: false },
+]
+
+const superAdminNavidation = [
+    { name: 'Dashboard', icon: HomeIcon, href: '/dashboard', current: true },
+    { name: 'Admins', icon: CalendarIcon, href: '/dashboard/super_admin/admins', current: false },
+    {name: "Posts", icon: CalendarIcon, href: '/dashboard/super_admin/posts', current: false},
 ]
 
 function classNames(...classes: string[]) {
@@ -29,8 +44,11 @@ function classNames(...classes: string[]) {
 }
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+    // const { user } = useAppSelector(state => state.user)
+    // console.log(user)
     const [ sidebarOpen, setSidebarOpen ] = useState(false)
     const { data: session } = useSession()
+    // console.log(session)
     return (
         <section>
             {/*
@@ -101,20 +119,20 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                                                 key={index}
                                                 href={item.href}
                                                 className='active:bg-gray-100 active:text-gray-900 text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-base font-medium rounded-md'
-                                                // className={classNames(
-                                                //     item.current
-                                                //         ? 'bg-gray-100 text-gray-900'
-                                                //         : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
-                                                //     'group flex items-center px-2 py-2 text-base font-medium rounded-md'
-                                                // )}
+                                            // className={classNames(
+                                            //     item.current
+                                            //         ? 'bg-gray-100 text-gray-900'
+                                            //         : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
+                                            //     'group flex items-center px-2 py-2 text-base font-medium rounded-md'
+                                            // )}
                                             >
                                                 <item.icon
                                                     className='text-gray-400 group-hover:text-gray-500 mr-4 flex-shrink-0 h-6 w-6 active:text-gray-500'
-                                                    // className={classNames(
-                                                    //     item.current ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
-                                                    //     'mr-4 flex-shrink-0 h-6 w-6'
-                                                    // )}
-                                                    // aria-hidden="true"
+                                                // className={classNames(
+                                                //     item.current ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
+                                                //     'mr-4 flex-shrink-0 h-6 w-6'
+                                                // )}
+                                                // aria-hidden="true"
                                                 />
                                                 {item.name}
                                             </Link>
@@ -161,27 +179,75 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                                 />
                             </div>
                             <nav className="mt-5 flex-1 px-2 bg-white space-y-1">
-                                {navigation.map((item, index) => (
-                                    <Link
-                                        key={index}
-                                        href={item.href}
-                                        className='active:bg-gray-100 active:text-gray-900 text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md'
-                                        // className={classNames(
-                                        //     item.current ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
-                                        //     'group flex items-center px-2 py-2 text-sm font-medium rounded-md'
-                                        // )}
-                                    >
-                                        <item.icon
-                                            className='text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6 active:text-gray-500'
-                                            // className={classNames(
-                                            //     item.current ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
-                                            //     'mr-3 flex-shrink-0 h-6 w-6'
-                                            // )}
-                                            aria-hidden="true"
-                                        />
-                                        {item.name}
-                                    </Link>
-                                ))}
+                                {
+                                    session && session?.role === "user" &&
+                                    userNavidation.map((item, index) => (
+                                        <Link
+                                            key={index}
+                                            href={item.href}
+                                            className='active:bg-gray-100 active:text-gray-900 text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md'
+
+                                        >
+                                            <item.icon
+                                                className='text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6 active:text-gray-500'
+
+                                                aria-hidden="true"
+                                            />
+                                            {item.name}
+                                        </Link>
+                                    ))
+                                }
+                                {
+                                    session && session.role === "admin" &&
+                                    adminNavidation.map((item, index) => (
+                                        <Link
+                                            key={index}
+                                            href={item.href}
+                                            className='active:bg-gray-100 active:text-gray-900 text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md'
+
+                                        >
+                                            <item.icon
+                                                className='text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6 active:text-gray-500'
+
+                                                aria-hidden="true"
+                                            />
+                                            {item.name}
+                                        </Link>))
+                                }
+                                {
+                                    session && session.role === "super_admin" &&
+                                    superAdminNavidation.map((item, index) => (
+                                        <Link
+                                            key={index}
+                                            href={item.href}
+                                            className='active:bg-gray-100 active:text-gray-900 text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md'
+
+                                        >
+                                            <item.icon
+                                                className='text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6 active:text-gray-500'
+
+                                                aria-hidden="true"
+                                            />
+                                            {item.name}
+                                        </Link>))
+                                }
+                                {
+                                    !session && navigation.map((item, index) => (
+                                        <Link
+                                            key={index}
+                                            href={item.href}
+                                            className='active:bg-gray-100 active:text-gray-900 text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md'
+
+                                        >
+                                            <item.icon
+                                                className='text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6 active:text-gray-500'
+
+                                                aria-hidden="true"
+                                            />
+                                            {item.name}
+                                        </Link>
+                                    ))
+                                }
                             </nav>
                         </div>
                         <div className="flex-shrink-0 flex border-t border-gray-200 p-4">
@@ -192,13 +258,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                                             height={36}
                                             width={36}
                                             className="inline-block h-9 w-9 rounded-full"
-                                            src={session?.user?.image || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'}
+                                            src={session?.image || ''}
                                             alt=""
                                         />
                                     </div>
                                     <div className="ml-3">
-                                        <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900">{session?.user?.name}</p>
-                                        <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">{session?.user?.email}</p>
+                                        <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900">{session?.name}</p>
+                                        <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">{session?.email}</p>
                                     </div>
                                 </div>
                             </a>

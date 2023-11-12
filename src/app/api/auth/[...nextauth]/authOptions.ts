@@ -5,7 +5,6 @@ import GoogleProvider from "next-auth/providers/google";
 import jwt, { JwtPayload, Secret } from "jsonwebtoken";
 import { PrismaClient } from "@prisma/client";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { refreshToken } from "@/utils/refreshToken";
 
 // const prisma = new PrismaClient();
 
@@ -23,7 +22,7 @@ export const authOptions: AuthOptions = {
       },
       async authorize(credentials) {
         try {
-          const res = await fetch(`${process.env.NEXTAUTH_URL}/api/auth`, {
+          const res = await fetch(`${process.env.BACKEND_URL}/api/auth`, {
             method: "POST",
             body: JSON.stringify(credentials),
             headers: { "Content-Type": "application/json" },
@@ -53,22 +52,14 @@ export const authOptions: AuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user }) {
+      console.log(token, user);
       return {
         ...token,
         ...user,
       };
     },
     async session({ session, token }) {
-      // const varifyToken = jwt.verify(
-      //   token?.token as string,
-      //   process.env.NEXTAUTH_SECRET as Secret
-      // ) as JwtPayload;
-      // if (!varifyToken) {
-      //   console.log("token expired so new token generated");
-      //   const data = await refreshToken(token?.token as string);
-      //   console.log(data)
-      //   token.token = data?.token;
-      // }
+      console.log(session, token);
       return {
         ...session,
         ...token,
@@ -77,7 +68,7 @@ export const authOptions: AuthOptions = {
   },
   session: {
     strategy: "jwt",
-    maxAge: 24 * 60 * 60,
+    maxAge: 24 * 60 * 60 * 30, // 30 days
   },
   jwt: {
     secret: process.env.NEXTAUTH_SECRET,

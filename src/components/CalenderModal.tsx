@@ -4,8 +4,11 @@ import 'react-date-range/dist/theme/default.css'; // theme css file
 import { DateRange } from 'react-date-range';
 import { Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
+import { useAppSelector } from '@/store/hook';
 
-export default function CalenderModal({ data, openModal, setOpenModal }: { data: string, openModal: boolean, setOpenModal: any }) {
+export default function CalenderModal({ openModal, setOpenModal }: { openModal: boolean, setOpenModal: any }) {
+    // const { user } = useAppSelector(state => state.user)
+    // console.log(user)
     const [ state, setState ] = useState([
         {
             startDate: new Date(),
@@ -23,9 +26,8 @@ export default function CalenderModal({ data, openModal, setOpenModal }: { data:
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                startDate: ranges?.[ 0 ]?.startDate,
-                endDate: ranges?.[ 0 ]?.endDate,
-                service: data
+                startDate: ranges?.[ 0 ]?.startDate.toISOString(),
+                endDate: ranges?.[ 0 ]?.endDate.toISOString(),
             })
         })
     }
@@ -83,7 +85,7 @@ export default function CalenderModal({ data, openModal, setOpenModal }: { data:
                                         handleSelect(state)
                                     }}
                                 >
-                                    Confirm
+                                    Search
                                 </button>
                                 <button
                                     type="button"

@@ -1,11 +1,13 @@
 'use client'
 import { setUser } from "@/store/features/user/User";
 import { useAppDispatch } from "@/store/hook";
-import { jwtDecode } from "jwt-decode";
+import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form"
-import { toast } from "react-hot-toast";
+import { jwtDecode } from "jwt-decode";
+import toast from "react-hot-toast";
 
 type Inputs = {
     email: string
@@ -13,37 +15,53 @@ type Inputs = {
 }
 
 export default function SignIn() {
-    const dispatch = useAppDispatch()
+    const router = useRouter();
+    const dispatch = useAppDispatch();
     const {
         register,
         handleSubmit,
+        watch,
         formState: { errors },
     } = useForm<Inputs>()
-    // const password = watch("password")
-    const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        await fetch(`http://localhost:5000/api/auth/user`, {
-            method: 'POST',
+    const password = watch("password")
+    const onSubmit: SubmitHandler<Inputs> = (data) => {
+        signIn("credentials", {
+            email: data.email,
+            password: data.password,
+            callbackUrl: "/",
+        })
+        fetch("http://localhost:5000/api/auth", {
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json'
+                "Content-Type": "application/json",
             },
-            body: JSON.stringify({
-                email: data.email,
-                password: data.password,
-            })
-        }).then(res => res.json())
-            .then((res) => {
-                localStorage.setItem('token', res.token)
-                const decoded = jwtDecode(res.token);
+            body: JSON.stringify(data),
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                localStorage.setItem("token", data?.token);
+                const decoded = jwtDecode(data?.token);
+                // console.log(decoded)
                 dispatch(setUser(decoded))
-                toast.success(res.message)
-            }).catch((err) => {
+                toast.success("Login Successfull")
+                router.push("/")
+            })
+            .catch((err) => {
                 console.log(err)
-                toast.error("Failed to login")
+                toast.error("Login Failed")
             })
     }
 
     return (
         <>
+            {/*
+        This example requires updating your template:
+
+        ```
+        <html class="h-full bg-white">
+        <body class="h-full">
+        ```
+      */}
             <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                     <Image

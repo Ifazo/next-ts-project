@@ -4,6 +4,7 @@ import { Dialog, Disclosure, Menu, Popover, Transition } from '@headlessui/react
 import { XIcon } from '@heroicons/react/outline'
 import { ChevronDownIcon } from '@heroicons/react/solid'
 import Link from 'next/link'
+import CalenderModal from './CalenderModal'
 
 const sortOptions = [
     { name: 'Most Popular', href: '#', current: true },
@@ -39,7 +40,6 @@ const filters = [
         ],
     },
 ]
-const activeFilters = [ { value: 'objects', label: 'Objects' } ]
 
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
@@ -47,6 +47,7 @@ function classNames(...classes: string[]) {
 
 export default function ServiceFilter() {
     const [ open, setOpen ] = useState(false)
+    const [ openModal, setOpenModal ] = useState(false)
 
     return (
         <div className="bg-white">
@@ -76,7 +77,7 @@ export default function ServiceFilter() {
                     >
                         <div className="ml-auto relative max-w-xs w-full h-full bg-white shadow-xl py-4 pb-12 flex flex-col overflow-y-auto">
                             <div className="px-4 flex items-center justify-between">
-                                    <h2 className="text-lg font-medium text-gray-900">Filter</h2>
+                                <h2 className="text-lg font-medium text-gray-900">Filter</h2>
                                 <button
                                     type="button"
                                     className="-mr-2 w-10 h-10 bg-white p-2 rounded-md flex items-center justify-center text-gray-400"
@@ -263,7 +264,7 @@ export default function ServiceFilter() {
 
                 {/* Active filters */}
                 <div className="bg-gray-100">
-                    <div className="max-w-7xl mx-auto py-3 px-4 sm:flex sm:items-center sm:px-6 lg:px-8">
+                    <div className="max-w-7xl mx-auto py-3 px-4 sm:px-6 lg:px-8 flex justify-between">
                         <Link href={"/service/add"}>
                             <button
                                 type="button"
@@ -272,29 +273,15 @@ export default function ServiceFilter() {
                                 Add Service
                             </button>
                         </Link>
-                        <div aria-hidden="true" className="hidden w-px h-5 bg-gray-300 sm:block sm:ml-4" />
-
-                        <div className="mt-2 sm:mt-0 sm:ml-4">
-                            <div className="-m-1 flex flex-wrap items-center">
-                                {activeFilters.map((activeFilter) => (
-                                    <span
-                                        key={activeFilter.value}
-                                        className="m-1 inline-flex rounded-full border border-gray-200 items-center py-1.5 pl-3 pr-2 text-sm font-medium bg-white text-gray-900"
-                                    >
-                                        <span>{activeFilter.label}</span>
-                                        <button
-                                            type="button"
-                                            className="flex-shrink-0 ml-1 h-4 w-4 p-1 rounded-full inline-flex text-gray-400 hover:bg-gray-200 hover:text-gray-500"
-                                        >
-                                            <span className="sr-only">Remove filter for {activeFilter.label}</span>
-                                            <svg className="h-2 w-2" stroke="currentColor" fill="none" viewBox="0 0 8 8">
-                                                <path strokeLinecap="round" strokeWidth="1.5" d="M1 1l6 6m0-6L1 7" />
-                                            </svg>
-                                        </button>
-                                    </span>
-                                ))}
-                            </div>
-                        </div>
+                        
+                        <button
+                            type="button"
+                            onClick={() => setOpenModal(true)}
+                            className="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        >
+                            Date filter
+                        </button>
+                        <CalenderModal openModal={openModal} setOpenModal={setOpenModal} />
                     </div>
                 </div>
             </section>

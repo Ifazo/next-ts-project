@@ -21,16 +21,15 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   const session = await getServerSession(authOptions);
-
-
+  console.log(session)
   return (
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-          <Header session={session} />
-          <Toaster />
-          {children}
-          <Footer />
+            <Header session={session} />
+            <Toaster />
+            {children}
+            <Footer />
         </Providers>
       </body>
     </html>

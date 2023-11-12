@@ -1,44 +1,42 @@
 'use client'
+import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form"
-import { toast } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 type Inputs = {
     name: string
     email: string
     password: string
-    role: string
 }
 
 export default function SignUp() {
-    const router = useRouter()
+    const router = useRouter();
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm<Inputs>()
-    // const password = watch("password")
+
     const onSubmit: SubmitHandler<Inputs> = (data) => {
+        // console.log(data)
         fetch(`http://localhost:5000/api/users`, {
-            method: 'POST',
+            method: "POST",
+            body: JSON.stringify(data),
             headers: {
-                'Content-Type': 'application/json'
+                "Content-Type": "application/json",
             },
-            body: JSON.stringify({
-                name: data.name,
-                email: data.email,
-                password: data.password,
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                toast.success("User created successfully");
+                router.push("/auth/signin");
             })
-        }).then(res => res.json())
-            .then((res) => {
-                toast.success(res.message)
-                router.push('/auth/signin')
-            }).catch((err) => {
-                console.log(err)
-                toast.error("Failed to login")
-            })
+            .catch((error) => {
+                console.error(error);
+            });
     }
 
     return (

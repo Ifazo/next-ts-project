@@ -1,34 +1,37 @@
 'use client'
 import { HeartIcon } from '@heroicons/react/outline'
 import Image from 'next/image'
-import { IService } from '@/types'
-import { useSession } from 'next-auth/react'
 import toast from 'react-hot-toast'
 import { useState } from 'react'
 import ReviewModal from './ReviewModal'
-import CalenderModal from './CalenderModal'
 
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function ServiceDetails({ data: product }: { data: IService }) {
+type IService = {
+    id: string;
+    name: string;
+    image: string;
+    description: string;
+    price: string;
+    category: string;
+    startDate: string;
+    endDate: string;
+};
 
-    const [ openModal, setOpenModal ] = useState(false)
+export default function ServiceDetails({ data: service }: { data: IService }) {
+    // console.log(service)
     const [ open, setOpen ] = useState(false)
-    const { data: session } = useSession()
-    // const startDate = new Date(product.startDate)
-    // const endDate = new Date(product.endDate)
-
-    const handleOrder = (product: IService) => {
-        fetch(`${process.env.NEXTAUTH_URL}/api/orders`, {
+    const handleOrder = (service: IService) => {
+        fetch(`${process.env.NEXTAUTH_URL}/api/booking`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                user: session?.user?.email,
-                products: [ product ],
+                // user: session?.user?.email,
+                service: service,
             })
         })
             .then(res => res.json())
@@ -46,7 +49,7 @@ export default function ServiceDetails({ data: product }: { data: IService }) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                user: session?.user?.email,
+                // user: session?.user?.email,
                 product: product,
             })
         })
@@ -64,20 +67,20 @@ export default function ServiceDetails({ data: product }: { data: IService }) {
             <div className="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start">
                 {/* Image gallery */}
                 <div className="w-full aspect-w-1 aspect-h-1">
-                    {/* <Image
+                    <Image
                         layout="fill"
-                        src={product.image}
-                        alt={product.name}
+                        src={service.image}
+                        alt={service.name}
                         className="w-full h-full object-center object-cover sm:rounded-lg"
-                    /> */}
+                    />
                 </div>
                 {/* Product info */}
                 <div className="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0">
-                    <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">{product.name}</h1>
+                    <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">{service.name}</h1>
 
                     <div className="mt-3">
-                        <h2 className="sr-only">Product information</h2>
-                        <p className="text-xl font-medium text-gray-900">${product.price}</p>
+                        <h2 className="sr-only">Service information</h2>
+                        <p className="text-xl font-medium text-gray-900">${service.price}</p>
                     </div>
                     {/* Reviews */}
                     {/* <div className="mt-3">
@@ -102,22 +105,20 @@ export default function ServiceDetails({ data: product }: { data: IService }) {
                         <h3 className="sr-only">Description</h3>
 
                         <div className="text-base text-gray-700 space-y-6">
-                            <p>{product.description}</p>
+                            <p>{service.description}</p>
                         </div>
                     </div>
                     <div className="mt-6">
                         <div className="mt-3 flex sm:flex-col1">
                             <button
                                 type="button"
-                                onClick={() => setOpenModal(true)}
                                 className="max-w-xs flex-1 bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500 sm:w-full"
                             >
                                 Book Now
                             </button>
-                            <CalenderModal data={product.id} openModal={openModal} setOpenModal={setOpenModal} />
                             <button
                                 type="button"
-                                onClick={() => handleWishlist(product)}
+                                onClick={() => handleWishlist(service)}
                                 className="max-w-xs flex-1 bg-gray ml-4 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-gray-500 sm:w-full"
                             >
                                 <HeartIcon className="h-6 w-6 flex-shrink-0" aria-hidden="true" />
@@ -133,7 +134,7 @@ export default function ServiceDetails({ data: product }: { data: IService }) {
                             >
                                 Write a review
                             </button>
-                            <ReviewModal open={open} setOpen={setOpen} id={product.id} />
+                            <ReviewModal open={open} setOpen={setOpen} id={service.id} />
                         </div>
                     </div>
                 </div>

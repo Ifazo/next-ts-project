@@ -9,8 +9,10 @@ import {
 } from "@heroicons/react/outline";
 import Image from "next/image";
 import Link from "next/link";
-import { useSession, signOut } from "next-auth/react"
 import { toast } from "react-hot-toast";
+import { useAppDispatch } from "@/store/hook";
+import { setUser } from "@/store/features/user/User";
+import { signOut } from "next-auth/react";
 
 const navigation = {
     categories: [
@@ -87,10 +89,9 @@ function classNames(...classes: string[]) {
 }
 
 export default function Header({ session }: { session: any }) {
-    const { data } = useSession()
-    console.log(data)
     const [ open, setOpen ] = useState(false);
-
+    console.log(session)
+    const dispatch = useAppDispatch()
     return (
         <div className="bg-white">
             {/* Mobile menu */}
@@ -298,6 +299,8 @@ export default function Header({ session }: { session: any }) {
                                         ? (<button
                                             type="button"
                                             onClick={() => {
+                                                localStorage.removeItem('token')
+                                                dispatch(setUser(null))
                                                 signOut()
                                                 toast.success('Signed out successfully')
                                             }}

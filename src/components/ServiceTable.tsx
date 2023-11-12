@@ -1,7 +1,8 @@
 import { IService } from "@/types"
 import Image from "next/image"
 
-export default function ServiceTable({data}: {data: IService[]}) {
+export default function ServiceTable({ data }: { data: IService[] }) {
+    // console.log(data)
     return (
         <div className="px-4 sm:px-6 lg:px-8">
             <div className="sm:flex sm:items-center">
