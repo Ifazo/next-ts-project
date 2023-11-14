@@ -105,13 +105,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                                 </Transition.Child>
                                 <div className="flex-1 h-0 pt-5 pb-4 overflow-y-auto">
                                     <div className="flex-shrink-0 flex items-center px-4">
-                                        <Image
-                                            height={32}
-                                            width={32}
-                                            className="h-8 w-auto"
-                                            src="https://tailwindui.com/img/logos/workflow-logo-indigo-600-mark-gray-800-text.svg"
-                                            alt="Workflow"
-                                        />
+                                        <Link href={'/'}>
+                                            <Image
+                                                height={32}
+                                                width={32}
+                                                className="h-8 w-auto"
+                                                src="https://tailwindui.com/img/logos/workflow-logo-indigo-600-mark-gray-800-text.svg"
+                                                alt="Workflow"
+                                            />
+                                        </Link>
                                     </div>
                                     <nav className="mt-5 px-2 space-y-1">
                                         {navigation.map((item, index) => (
@@ -170,13 +172,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     <div className="flex-1 flex flex-col min-h-0 border-r border-gray-200 bg-white">
                         <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
                             <div className="flex items-center flex-shrink-0 px-4">
-                                <Image
-                                    height={32}
-                                    width={32}
-                                    className="h-8 w-auto"
-                                    src="https://tailwindui.com/img/logos/workflow-logo-indigo-600-mark-gray-800-text.svg"
-                                    alt="Workflow"
-                                />
+                                <Link href={'/'}>
+                                    <Image
+                                        height={32}
+                                        width={32}
+                                        className="h-8 w-auto"
+                                        src="https://tailwindui.com/img/logos/workflow-logo-indigo-600-mark-gray-800-text.svg"
+                                        alt="Workflow"
+                                    />
+                                </Link>
                             </div>
                             <nav className="mt-5 flex-1 px-2 bg-white space-y-1">
                                 {
@@ -254,13 +258,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                             <a href="#" className="flex-shrink-0 w-full group block">
                                 <div className="flex items-center">
                                     <div>
-                                        <Image
-                                            height={36}
-                                            width={36}
-                                            className="inline-block h-9 w-9 rounded-full"
-                                            src={session?.image || ''}
-                                            alt=""
-                                        />
+                                        <Link href={'/'}>
+                                            <Image
+                                                height={36}
+                                                width={36}
+                                                className="inline-block h-9 w-9 rounded-full"
+                                                src={session?.image || ''}
+                                                alt=""
+                                            />
+                                        </Link>
                                     </div>
                                     <div className="ml-3">
                                         <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900">{session?.name}</p>

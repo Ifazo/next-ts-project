@@ -15,7 +15,7 @@ export default async function page() {
         throw new Error('Failed to fetch data')
     }
     const data = await res.json()
-    // console.log(data)
+    console.log(data)
     return (
         <div>
             <UserTable data={data?.data} />

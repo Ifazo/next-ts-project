@@ -1,8 +1,8 @@
-import { IOrder } from "@/types"
+import { IOrder, IService } from "@/types"
 import Image from "next/image"
 
-export default async function OrderHistory({ data: orders }: { data: IOrder[] }) {
-    // console.log(orders)
+export default async function OrderHistory({ data }: { data: IOrder[] }) {
+    console.log(data)
     return (
         <div className="bg-white">
             <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:pb-24 lg:px-8">
@@ -17,8 +17,8 @@ export default async function OrderHistory({ data: orders }: { data: IOrder[] })
                     <h2 className="sr-only">Recent orders</h2>
 
                     <div className="space-y-20">
-                        {orders.map((order, index) => (
-                            <div key={index}>
+                        {data?.map((order: IOrder) => (
+                            <div key={order.id}>
                                 <h3 className="sr-only">
                                     {/* Order placed on <time dateTime={order.datetime}>{order.date}</time> */}
                                 </h3>
@@ -33,11 +33,11 @@ export default async function OrderHistory({ data: orders }: { data: IOrder[] })
                                         </div>
                                         <div className="flex justify-between pt-6 sm:block sm:pt-0">
                                             <dt className="font-medium text-gray-900">Order number</dt>
-                                            <dd className="sm:mt-1">{1}</dd>
+                                            {/* <dd className="sm:mt-1">{data.length}</dd> */}
                                         </div>
                                         <div className="flex justify-between pt-6 font-medium text-gray-900 sm:block sm:pt-0">
                                             <dt>Total amount</dt>
-                                            <dd className="sm:mt-1">{1}</dd>
+                                            {/* <dd className="sm:mt-1">{data.length}</dd> */}
                                         </div>
                                     </dl>
                                     <a
@@ -57,10 +57,10 @@ export default async function OrderHistory({ data: orders }: { data: IOrder[] })
                                                 Product
                                             </th>
                                             <th scope="col" className="hidden w-1/5 pr-8 py-3 font-normal sm:table-cell">
-                                                Price
+                                                Start Date
                                             </th>
                                             <th scope="col" className="hidden pr-8 py-3 font-normal sm:table-cell">
-                                                Date
+                                                End Date
                                             </th>
                                             <th scope="col" className="w-0 py-3 font-normal text-right">
                                                 Info
@@ -68,29 +68,29 @@ export default async function OrderHistory({ data: orders }: { data: IOrder[] })
                                         </tr>
                                     </thead>
                                     <tbody className="border-b border-gray-200 divide-y divide-gray-200 text-sm sm:border-t">
-                                        {order.products.map((product) => (
-                                            <tr key={product.id}>
+                                        {order?.service.map((service: IService) => (
+                                            <tr key={service.id}>
                                                 <td className="py-6 pr-8">
                                                     <div className="flex items-center">
                                                         <Image
                                                             width={64}
                                                             height={64}
-                                                            src={product.image}
+                                                            src={service.image}
                                                             alt="cover"
                                                             className="w-16 h-16 object-center object-cover rounded mr-6"
                                                         />
                                                         <div>
-                                                            <div className="font-medium text-gray-900">{product.name}</div>
-                                                            <div className="mt-1 sm:hidden">{product.price}</div>
+                                                            <div className="font-medium text-gray-900">{service.name}</div>
+                                                            <div className="font-light text-gray-700">${service.price}</div>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td className="hidden py-6 pr-8 sm:table-cell">${product.price}</td>
-                                                <td className="hidden py-6 pr-8 sm:table-cell">{product.createdAt}</td>
+                                                <td className="hidden py-6 pr-8 sm:table-cell">{service.startDate}</td>
+                                                <td className="hidden py-6 pr-8 sm:table-cell">{service.endDate}</td>
                                                 <td className="py-6 font-medium text-right whitespace-nowrap">
-                                                    <a href={product.id} className="text-indigo-600">
+                                                    <a href={service.id} className="text-indigo-600">
                                                         View<span className="hidden lg:inline"> Product</span>
-                                                        <span className="sr-only">, {product.name}</span>
+                                                        <span className="sr-only">, {service.name}</span>
                                                     </a>
                                                 </td>
                                             </tr>

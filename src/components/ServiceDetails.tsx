@@ -4,6 +4,7 @@ import Image from 'next/image'
 import toast from 'react-hot-toast'
 import { useState } from 'react'
 import ReviewModal from './ReviewModal'
+import { useSession } from 'next-auth/react'
 
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
@@ -21,43 +22,63 @@ type IService = {
 };
 
 export default function ServiceDetails({ data: service }: { data: IService }) {
-    // console.log(service)
+    const {data: session} = useSession()
+    // console.log(session)
     const [ open, setOpen ] = useState(false)
-    const handleOrder = (service: IService) => {
-        fetch(`${process.env.NEXTAUTH_URL}/api/booking`, {
+
+    const handleOrder = async (service: IService) => {
+        if (!session) {
+            toast.error('User not authenticated');
+            return;
+        }
+        await fetch(`http://localhost:5000/api/bookings`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'authorization': session?.token
             },
             body: JSON.stringify({
-                // user: session?.user?.email,
+                services: service,
+            })
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+                if (!!data.success) {
+                    toast.success('Order placed successfully')
+                }
+                else {
+                    toast.error('Failed to place order')
+                }
+            })
+            .catch(err => {
+                console.log(err)
+                toast.error('Something went wrong')
+            })
+    }
+
+    const handleWishlist = async (service: IService) => {
+        if (!session) {
+            toast.error('User not authenticated');
+            return;
+        }
+        await fetch(`http://localhost:5000/api/wishlist`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': session?.token
+            },
+            body: JSON.stringify({
                 service: service,
             })
         })
             .then(res => res.json())
             .then(data => {
-                toast.success('Order placed successfully')
-            })
-            .catch(err => {
-                toast.error('Something went wrong')
-            })
-    }
-    const handleWishlist = (product: IService) => {
-        fetch(`${process.env.NEXTAUTH_URL}/api/wishlist`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                // user: session?.user?.email,
-                product: product,
-            })
-        })
-            .then(res => res.json())
-            .then(data => {
+                console.log(data)
                 toast.success('Added to wishlist')
             })
             .catch(err => {
+                console.log(err)
                 toast.error('Something went wrong')
             })
     }
@@ -112,6 +133,7 @@ export default function ServiceDetails({ data: service }: { data: IService }) {
                         <div className="mt-3 flex sm:flex-col1">
                             <button
                                 type="button"
+                                onClick={() => handleOrder(service)}
                                 className="max-w-xs flex-1 bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500 sm:w-full"
                             >
                                 Book Now

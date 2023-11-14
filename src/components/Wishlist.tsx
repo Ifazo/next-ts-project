@@ -4,7 +4,7 @@ import { CheckIcon, ClockIcon } from '@heroicons/react/solid'
 import Image from 'next/image'
 
 export default function Wishlist({ data }: { data: any }) {
-    // console.log(data)
+    console.log(data)
     const products = data.map((item: any) => {
         return item.product
     })
@@ -21,13 +21,13 @@ export default function Wishlist({ data }: { data: any }) {
                         </h2>
 
                         <ul role="list" className="border-t border-b border-gray-200 divide-y divide-gray-200">
-                            {products.map((product: IService) => (
+                            {data?.map((product: IService) => (
                                 <li key={product.id} className="flex py-6">
                                     <div className="flex-shrink-0">
                                         <Image
                                             height={96}
                                             width={96}
-                                            src={product.image}
+                                            src={product.image || "https://i.ibb.co"}
                                             alt="cover"
                                             className="w-24 h-24 rounded-md object-center object-cover sm:w-32 sm:h-32"
                                         />
@@ -38,12 +38,12 @@ export default function Wishlist({ data }: { data: any }) {
                                             <div className="flex justify-between">
                                                 <h4 className="text-sm">
                                                     <a href={product.id} className="font-medium text-gray-700 hover:text-gray-800">
-                                                        {product.name}
+                                                        {product.name || "Service Name"}
                                                     </a>
                                                 </h4>
-                                                <p className="ml-4 text-sm font-medium text-gray-900">${product.price}</p>
+                                                <p className="ml-4 text-sm font-medium text-gray-900">${product.price || "66"}</p>
                                             </div>
-                                            <p className="mt-1 text-sm text-gray-500">{product.category}</p>
+                                            <p className="mt-1 text-sm text-gray-500">{product.category || "Demo"}</p>
                                             <p className="mt-1 text-sm text-gray-500">Rating: 4.5 out of 5</p>
                                         </div>
 

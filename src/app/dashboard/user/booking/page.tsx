@@ -8,7 +8,7 @@ import React from 'react'
 export default async function page() {
     const session = await getServerSession(authOptions);
     console.log(session)
-    const res = await fetch(`${process.env.BACKEND_URL}/api/booking`, {
+    const res = await fetch(`${process.env.BACKEND_URL}/api/bookings`, {
         headers: {
             'authorization': session?.token
         },
@@ -18,7 +18,7 @@ export default async function page() {
     console.log(data)
     return (
         <div>
-            {/* <OrderHistory data={data} /> */}
+            <OrderHistory data={data?.data} />
         </div>
     )
 }

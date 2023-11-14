@@ -1,4 +1,5 @@
 'use client'
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation"
 import { useForm, SubmitHandler } from "react-hook-form"
 import toast from "react-hot-toast"
@@ -17,6 +18,11 @@ type IService = {
 export default function AddService() {
     const router = useRouter()
     // const { data: session } = useSession()
+    // console.log(session)
+    // if (session?.role !== 'admin' || !session) {
+    //     toast.error('You are not authorized to access this page!');
+    //     router.push('/')
+    // }
     const {
         register,
         handleSubmit,
@@ -44,15 +50,17 @@ export default function AddService() {
                     },
                     body: JSON.stringify(data),
                 })
-                    .then((response) => response.json())
-                    .then(() => {
-                        toast.success('Service added successfully');
-                        router.push('/');
+                    .then((res) => res.json())
+                    .then((res) => {
+                        console.log(res)
+                        toast.success("Service added successfully!");
+                        // router.push('/');
 
                     })
-                    .catch(() => {
+                    .catch((err) => {
+                        console.log(err)
                         toast.error('Something went wrong!');
-                        router.push('/');
+                        // router.push('/');
                     });
             })
     }
@@ -98,7 +106,7 @@ export default function AddService() {
                             </div>
 
                             <div className="w-full">
-                                <label htmlFor="start-date" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date</label>
+                                <label htmlFor="start-date" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Start Date</label>
                                 {errors.startDate && <small>This field is required</small>}
                                 <input
                                     id="start-date"
@@ -108,7 +116,7 @@ export default function AddService() {
                             </div>
 
                             <div className="w-full">
-                                <label htmlFor="end-date" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date</label>
+                                <label htmlFor="end-date" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">End Date</label>
                                 {errors.endDate && <small>This field is required</small>}
                                 <input
                                     id="end-date"

@@ -9,6 +9,7 @@ type IUser = {
 };
 
 type IService = {
+  map(arg0: (service: IService) => import("react").JSX.Element): import("react").ReactNode;
   id: string;
   name: string;
   image: string;
@@ -20,7 +21,9 @@ type IService = {
 };
 
 type IOrder = {
+  map(arg0: (service: IService) => import("react").JSX.Element): import("react").ReactNode;
   id: string;
+  service: IService;
   user: string;
 };
 
