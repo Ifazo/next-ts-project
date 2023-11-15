@@ -4,15 +4,13 @@ import { getServerSession } from 'next-auth';
 
 export default async function page() {
     const session = await getServerSession(authOptions);
+    const { token } = session as any
     const res = await fetch(`${process.env.BACKEND_URL}/api/wishlist`, {
         headers: {
-            'authorization': session?.token
+            'authorization': token
         },
         cache: 'no-cache'
     })
-    if (!res.ok) {
-        throw new Error('Failed to fetch data')
-    }
     const data = await res.json()
     console.log(data)
     return (

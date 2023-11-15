@@ -20,20 +20,20 @@ const navigation = [
     { name: 'Dashboard', icon: HomeIcon, href: '/dashboard', current: true },
 ]
 
-const userNavidation = [
+const userNavigation = [
     { name: 'Dashboard', icon: HomeIcon, href: '/dashboard', current: true },
     { name: 'Orders', icon: FolderIcon, href: '/dashboard/user/booking', current: true },
     { name: 'Wishlist', icon: InboxIcon, href: '/dashboard/user/wishlist', current: false },
     { name: 'Reviews', icon: ChartBarIcon, href: '/dashboard/user/reviews', current: false },
 ]
 
-const adminNavidation = [
+const adminNavigation = [
     { name: 'Dashboard', icon: HomeIcon, href: '/dashboard', current: true },
     { name: 'Users', icon: UsersIcon, href: '/dashboard/admin/users', current: true },
     { name: 'Services', icon: CalendarIcon, href: '/dashboard/admin/services', current: false },
 ]
 
-const superAdminNavidation = [
+const superAdminNavigation = [
     { name: 'Dashboard', icon: HomeIcon, href: '/dashboard', current: true },
     { name: 'Admins', icon: CalendarIcon, href: '/dashboard/super_admin/admins', current: false },
     {name: "Posts", icon: CalendarIcon, href: '/dashboard/super_admin/posts', current: false},
@@ -48,7 +48,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     // console.log(user)
     const [ sidebarOpen, setSidebarOpen ] = useState(false)
     const { data: session } = useSession()
-    // console.log(session)
+    const { role, image, name, email } = session as any
     return (
         <section>
             {/*
@@ -184,8 +184,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                             </div>
                             <nav className="mt-5 flex-1 px-2 bg-white space-y-1">
                                 {
-                                    session && session?.role === "user" &&
-                                    userNavidation.map((item, index) => (
+                                    session && role === "user" &&
+                                    userNavigation.map((item, index) => (
                                         <Link
                                             key={index}
                                             href={item.href}
@@ -202,8 +202,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                                     ))
                                 }
                                 {
-                                    session && session.role === "admin" &&
-                                    adminNavidation.map((item, index) => (
+                                    session && role === "admin" &&
+                                    adminNavigation.map((item, index) => (
                                         <Link
                                             key={index}
                                             href={item.href}
@@ -219,8 +219,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                                         </Link>))
                                 }
                                 {
-                                    session && session.role === "super_admin" &&
-                                    superAdminNavidation.map((item, index) => (
+                                    session && role === "super_admin" &&
+                                    superAdminNavigation.map((item, index) => (
                                         <Link
                                             key={index}
                                             href={item.href}
@@ -263,14 +263,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                                                 height={36}
                                                 width={36}
                                                 className="inline-block h-9 w-9 rounded-full"
-                                                src={session?.image || ''}
+                                                src={image || ''}
                                                 alt=""
                                             />
                                         </Link>
                                     </div>
                                     <div className="ml-3">
-                                        <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900">{session?.name}</p>
-                                        <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">{session?.email}</p>
+                                        <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900">{name}</p>
+                                        <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">{email}</p>
                                     </div>
                                 </div>
                             </a>

@@ -17,9 +17,9 @@ type IService = {
 
 export default function AddService() {
     const router = useRouter()
-    // const { data: session } = useSession()
-    // console.log(session)
-    // if (session?.role !== 'admin' || !session) {
+    const { data: session } = useSession()
+    const { token, role } = session as any
+    // if (role !== 'admin' || !session) {
     //     toast.error('You are not authorized to access this page!');
     //     router.push('/')
     // }
@@ -42,11 +42,11 @@ export default function AddService() {
                 data.image = image;
                 data.startDate = new Date(data.startDate).toISOString();
                 data.endDate = new Date(data.endDate).toISOString();
-                fetch(`http://localhost:5000/api/services`, {
+                fetch(`https://prisma-postgres-ifaz.vercel.app/api/services`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'authorization': localStorage.getItem('token') || ''
+                        'authorization': token,
                     },
                     body: JSON.stringify(data),
                 })

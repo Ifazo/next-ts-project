@@ -5,6 +5,8 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { useAppSelector } from '@/store/hook'
 import { useRouter } from 'next/navigation'
+import { getServerSession } from 'next-auth'
+import { useSession } from 'next-auth/react'
 
 type IReview = {
     id: string;
@@ -18,35 +20,33 @@ type IReview = {
 }
 
 export default function ReviewModal({ id, open, setOpen }: { id: string, open: boolean, setOpen: any }) {
-    const { user } = useAppSelector(state => state.user)
     const router = useRouter()
+    const { data: session } = useSession()
+    const { token } = session as any
     const cancelButtonRef = useRef(null)
     const { register, handleSubmit, formState: { errors } } = useForm<IReview>()
     const onSubmit: SubmitHandler<IReview> = (data: IReview) => {
         try {
-            if (!user) {
+            if (!session) {
                 toast.error('You must be logged in to submit a review')
                 router.push('/auth/signin')
                 return
             }
             const review = {
-                user: user.id,
-                name: user.name,
-                image: user.image,
-                service: id,
                 rating: Number(data.rating),
                 review: data.review,
+                service: id,
             }
-            fetch('http://localhost:5000/api/reviews', {
+            fetch('https://prisma-postgres-ifaz.vercel.app/api/reviews', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'authorization': localStorage.getItem('token') || ''
+                    'authorization': token
                 },
                 body: JSON.stringify(review)
-            }).then(() => {
+            }).then((res) => {
+                console.log(res)
                 toast.success('Review submitted')
-                window.location.reload()
             }).catch(() => {
                 toast.error('Review failed to submit')
             })

@@ -1,7 +1,4 @@
 'use client'
-import 'react-date-range/dist/styles.css'; // main css file
-import 'react-date-range/dist/theme/default.css'; // theme css file
-import { DateRange } from 'react-date-range';
 import { Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { useAppSelector } from '@/store/hook';
@@ -67,12 +64,7 @@ export default function CalenderModal({ openModal, setOpenModal }: { openModal: 
                                         Select Date
                                     </Dialog.Title>
                                     <div className="mt-2">
-                                        <DateRange
-                                            editableDateInputs={true}
-                                            onChange={(item) => setState([ item.selection ])}
-                                            moveRangeOnFirstSelection={false}
-                                            ranges={state}
-                                        />
+                                        
                                     </div>
                                 </div>
                             </div>

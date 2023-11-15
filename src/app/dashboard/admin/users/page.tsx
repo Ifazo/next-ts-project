@@ -3,19 +3,17 @@ import UserTable from '@/components/UserTable'
 import { getServerSession } from 'next-auth';
 
 export default async function page() {
-    const session = await getServerSession(authOptions);
-    // console.log(session)
+    const session = await getServerSession();
+    console.log(session)
+    const {token} = session as any
     const res = await fetch(`${process.env.BACKEND_URL}/api/users`, {
         headers: {
-            'authorization': session?.token
+            'authorization': token,
         },
         cache: 'no-cache',
     })
-    if (!res.ok) {
-        throw new Error('Failed to fetch data')
-    }
     const data = await res.json()
-    console.log(data)
+    // console.log(data)
     return (
         <div>
             <UserTable data={data?.data} />

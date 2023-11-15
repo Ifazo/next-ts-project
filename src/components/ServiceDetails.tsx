@@ -22,8 +22,8 @@ type IService = {
 };
 
 export default function ServiceDetails({ data: service }: { data: IService }) {
-    const {data: session} = useSession()
-    // console.log(session)
+    const { data: session } = useSession()
+    const { token } = session as any
     const [ open, setOpen ] = useState(false)
 
     const handleOrder = async (service: IService) => {
@@ -31,11 +31,11 @@ export default function ServiceDetails({ data: service }: { data: IService }) {
             toast.error('User not authenticated');
             return;
         }
-        await fetch(`http://localhost:5000/api/bookings`, {
+        await fetch(`https://prisma-postgres-ifaz.vercel.app/api/bookings`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'authorization': session?.token
+                'authorization': token
             },
             body: JSON.stringify({
                 services: service,
@@ -62,11 +62,11 @@ export default function ServiceDetails({ data: service }: { data: IService }) {
             toast.error('User not authenticated');
             return;
         }
-        await fetch(`http://localhost:5000/api/wishlist`, {
+        await fetch(`https://prisma-postgres-ifaz.vercel.app/api/wishlist`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'authorization': session?.token
+                'authorization': token
             },
             body: JSON.stringify({
                 service: service,

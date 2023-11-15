@@ -17,8 +17,8 @@ export const authOptions: AuthOptions = {
       name: "Credentials",
       type: "credentials",
       credentials: {
-        username: { label: "Email", type: "email", placeholder: "Your E-mail" },
-        password: { label: "Password", type: "password" },
+        username: { label: "email", type: "email" },
+        password: { label: "password", type: "password" },
       },
       async authorize(credentials) {
         try {
@@ -68,10 +68,15 @@ export const authOptions: AuthOptions = {
   },
   session: {
     strategy: "jwt",
-    maxAge: 24 * 60 * 60 * 30, // 30 days
+    maxAge: 24 * 60 * 60 * 30,
   },
   jwt: {
     secret: process.env.NEXTAUTH_SECRET,
   },
   secret: process.env.NEXTAUTH_SECRET,
+  pages: {
+    signIn: "/auth/signin",
+    signOut: "/",
+    error: "/",
+  }
 };

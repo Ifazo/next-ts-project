@@ -7,10 +7,10 @@ import React from 'react'
 
 export default async function page() {
     const session = await getServerSession(authOptions);
-    console.log(session)
+    const { token } = session as any
     const res = await fetch(`${process.env.BACKEND_URL}/api/bookings`, {
         headers: {
-            'authorization': session?.token
+            'authorization': token
         },
         cache: 'no-cache',
     })
