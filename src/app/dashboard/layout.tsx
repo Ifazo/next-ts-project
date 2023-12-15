@@ -3,7 +3,6 @@ import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import {
     CalendarIcon,
-    ChartBarIcon,
     FolderIcon,
     HomeIcon,
     InboxIcon,
@@ -13,7 +12,6 @@ import {
 } from '@heroicons/react/outline'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useSession } from 'next-auth/react'
 import { useAppSelector } from '@/store/hook'
 
 const navigation = [
@@ -22,9 +20,8 @@ const navigation = [
 
 const userNavigation = [
     { name: 'Dashboard', icon: HomeIcon, href: '/dashboard', current: true },
-    { name: 'Orders', icon: FolderIcon, href: '/dashboard/user/booking', current: true },
+    { name: 'Booking', icon: FolderIcon, href: '/dashboard/user/booking', current: true },
     { name: 'Wishlist', icon: InboxIcon, href: '/dashboard/user/wishlist', current: false },
-    { name: 'Reviews', icon: ChartBarIcon, href: '/dashboard/user/reviews', current: false },
 ]
 
 const adminNavigation = [
@@ -36,7 +33,7 @@ const adminNavigation = [
 const superAdminNavigation = [
     { name: 'Dashboard', icon: HomeIcon, href: '/dashboard', current: true },
     { name: 'Admins', icon: CalendarIcon, href: '/dashboard/super_admin/admins', current: false },
-    {name: "Posts", icon: CalendarIcon, href: '/dashboard/super_admin/posts', current: false},
+    { name: "Categories", icon: CalendarIcon, href: '/dashboard/super_admin/categories', current: false },
 ]
 
 function classNames(...classes: string[]) {
@@ -44,21 +41,11 @@ function classNames(...classes: string[]) {
 }
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-    // const { user } = useAppSelector(state => state.user)
-    // console.log(user)
+    const { user } = useAppSelector(state => state.user)
+    const role = user?.role
     const [ sidebarOpen, setSidebarOpen ] = useState(false)
-    const { data: session } = useSession()
-    const { role, image, name, email } = session as any
     return (
         <section>
-            {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-gray-100">
-        <body class="h-full">
-        ```
-      */}
             <div>
                 <Transition.Root show={sidebarOpen} as={Fragment}>
                     <Dialog as="div" className="fixed inset-0 flex z-40 md:hidden" onClose={setSidebarOpen}>
@@ -142,7 +129,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                                     </nav>
                                 </div>
                                 <div className="flex-shrink-0 flex border-t border-gray-200 p-4">
-                                    <a href="#" className="flex-shrink-0 group block">
+                                    <Link href='/' className="flex-shrink-0 group block">
                                         <div className="flex items-center">
                                             <div>
                                                 <Image
@@ -154,11 +141,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                                                 />
                                             </div>
                                             <div className="ml-3">
-                                                <p className="text-base font-medium text-gray-700 group-hover:text-gray-900">Tom Cook</p>
-                                                <p className="text-sm font-medium text-gray-500 group-hover:text-gray-700">View profile</p>
+                                                <p className="text-base font-medium text-gray-700 group-hover:text-gray-900">{''}</p>
+                                                <p className="text-sm font-medium text-gray-500 group-hover:text-gray-700">{''}</p>
                                             </div>
                                         </div>
-                                    </a>
+                                    </Link>
                                 </div>
                             </div>
                         </Transition.Child>
@@ -183,8 +170,25 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                                 </Link>
                             </div>
                             <nav className="mt-5 flex-1 px-2 bg-white space-y-1">
+                                {/* {
+                                    navigation.map((item, index) => (
+                                        <Link
+                                            key={index}
+                                            href={item.href}
+                                            className='active:bg-gray-100 active:text-gray-900 text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md'
+
+                                        >
+                                            <item.icon
+                                                className='text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6 active:text-gray-500'
+
+                                                aria-hidden="true"
+                                            />
+                                            {item.name}
+                                        </Link>
+                                    ))
+                                } */}
                                 {
-                                    session && role === "user" &&
+                                    role === "user" &&
                                     userNavigation.map((item, index) => (
                                         <Link
                                             key={index}
@@ -202,7 +206,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                                     ))
                                 }
                                 {
-                                    session && role === "admin" &&
+                                    role === "admin" &&
                                     adminNavigation.map((item, index) => (
                                         <Link
                                             key={index}
@@ -219,7 +223,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                                         </Link>))
                                 }
                                 {
-                                    session && role === "super_admin" &&
+                                    role === "super_admin" &&
                                     superAdminNavigation.map((item, index) => (
                                         <Link
                                             key={index}
@@ -235,26 +239,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                                             {item.name}
                                         </Link>))
                                 }
-                                {
-                                    !session && navigation.map((item, index) => (
-                                        <Link
-                                            key={index}
-                                            href={item.href}
-                                            className='active:bg-gray-100 active:text-gray-900 text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md'
-
-                                        >
-                                            <item.icon
-                                                className='text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6 active:text-gray-500'
-
-                                                aria-hidden="true"
-                                            />
-                                            {item.name}
-                                        </Link>
-                                    ))
-                                }
                             </nav>
                         </div>
-                        <div className="flex-shrink-0 flex border-t border-gray-200 p-4">
+                        {/* <div className="flex-shrink-0 flex border-t border-gray-200 p-4">
                             <a href="#" className="flex-shrink-0 w-full group block">
                                 <div className="flex items-center">
                                     <div>
@@ -274,7 +261,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                                     </div>
                                 </div>
                             </a>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 <div className="md:pl-64 flex flex-col flex-1">

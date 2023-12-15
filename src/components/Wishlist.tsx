@@ -81,7 +81,7 @@ export default function Wishlist({ data }: { data: any }) {
                             <dl className="space-y-4">
                                 <div className="flex items-center justify-between">
                                     <dt className="text-base font-medium text-gray-900">Subtotal</dt>
-                                    <dd className="ml-4 text-base font-medium text-gray-900">$96.00</dd>
+                                    <dd className="ml-4 text-base font-medium text-gray-900">$00.00</dd>
                                 </div>
                             </dl>
                             <p className="mt-1 text-sm text-gray-500">Shipping and taxes will be calculated at checkout.</p>

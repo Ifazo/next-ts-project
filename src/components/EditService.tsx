@@ -1,22 +1,12 @@
 'use client'
 import { useAppSelector } from "@/store/hook";
+import { IService } from "@/types";
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form"
 import toast from "react-hot-toast"
 
-type IService = {
-    id: string;
-    name: string;
-    image: string;
-    description: string;
-    price: string;
-    category: string;
-    startDate: string;
-    endDate: string;
-};
-
-export default function AddService() {
+export default function EditService() {
     const [ categories, setCategories ] = useState([]);
 
     useEffect(() => {

@@ -3,10 +3,8 @@ import { Fragment, useRef } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
-import { useAppSelector } from '@/store/hook'
 import { useRouter } from 'next/navigation'
-import { getServerSession } from 'next-auth'
-import { useSession } from 'next-auth/react'
+import { useAppSelector } from '@/store/hook'
 
 type IReview = {
     id: string;
@@ -21,13 +19,13 @@ type IReview = {
 
 export default function ReviewModal({ id, open, setOpen }: { id: string, open: boolean, setOpen: any }) {
     const router = useRouter()
-    const { data: session } = useSession()
-    const { token } = session as any
+    const { user } = useAppSelector(state => state.user)
+    const { token } = user as { token: string }
     const cancelButtonRef = useRef(null)
     const { register, handleSubmit, formState: { errors } } = useForm<IReview>()
     const onSubmit: SubmitHandler<IReview> = (data: IReview) => {
         try {
-            if (!session) {
+            if (!user) {
                 toast.error('You must be logged in to submit a review')
                 router.push('/auth/signin')
                 return
@@ -37,16 +35,23 @@ export default function ReviewModal({ id, open, setOpen }: { id: string, open: b
                 review: data.review,
                 service: id,
             }
-            fetch('https://prisma-postgres-ifaz.vercel.app/api/reviews', {
+            fetch(`${process.env.BACKEND_URL}/api/reviews`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'authorization': token
                 },
                 body: JSON.stringify(review)
-            }).then((res) => {
-                console.log(res)
-                toast.success('Review submitted')
+            })
+                .then(res => res.json())
+                .then((res) => {
+                    if (!!res.success) {
+                        toast.success(res.message)
+                        router.refresh()
+                    }
+                    else {
+                        toast.error(res.message)
+                    }
             }).catch(() => {
                 toast.error('Review failed to submit')
             })

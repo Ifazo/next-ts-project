@@ -13,6 +13,7 @@ import { toast } from "react-hot-toast";
 import { useAppDispatch } from "@/store/hook";
 import { setUser } from "@/store/features/user/User";
 import { signOut } from "next-auth/react";
+import logo from "../../public/logo.png"
 
 const navigation = {
     categories: [
@@ -92,6 +93,7 @@ export default function Header({ session }: { session: any }) {
     const [ open, setOpen ] = useState(false);
     console.log(session)
     const dispatch = useAppDispatch()
+    dispatch(setUser(session))
     return (
         <div className="bg-white">
             {/* Mobile menu */}
@@ -240,13 +242,6 @@ export default function Header({ session }: { session: any }) {
                                     <span className="sr-only">Open menu</span>
                                     <MenuIcon className="h-6 w-6" aria-hidden="true" />
                                 </button>
-
-                                <a
-                                    href="#"
-                                    className="ml-2 p-2 text-gray-400 hover:text-gray-500">
-                                    <span className="sr-only">Search</span>
-                                    <SearchIcon className="w-6 h-6" aria-hidden="true" />
-                                </a>
                             </div>
 
                             {/* Flyout menus */}
@@ -267,31 +262,15 @@ export default function Header({ session }: { session: any }) {
                             <Link href="/" className="flex">
                                 <span className="sr-only">Workflow</span>
                                 <Image
-                                    width={32}
-                                    height={32}
-                                    className="h-8 w-auto"
-                                    src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600"
-                                    alt=""
+                                    width={64}
+                                    height={64}
+                                    className="h-16 w-auto"
+                                    src={logo}
+                                    alt="logo"
                                 />
                             </Link>
 
                             <div className="flex-1 flex items-center justify-end">
-
-                                {/* Search */}
-                                <a
-                                    href="#"
-                                    className="hidden ml-6 p-2 text-gray-400 hover:text-gray-500 lg:block">
-                                    <span className="sr-only">Search</span>
-                                    <SearchIcon className="w-6 h-6" aria-hidden="true" />
-                                </a>
-
-                                {/* Profile */}
-                                <Link
-                                    href="/profile"
-                                    className="p-2 text-gray-400 hover:text-gray-500 lg:ml-4">
-                                    <span className="sr-only">Account</span>
-                                    <UserIcon className="w-6 h-6" aria-hidden="true" />
-                                </Link>
 
                                 {/* Auth */}
                                 <div className="ml-4 flow-root lg:ml-6">
@@ -299,9 +278,8 @@ export default function Header({ session }: { session: any }) {
                                         ? (<button
                                             type="button"
                                             onClick={() => {
-                                                localStorage.removeItem('token')
-                                                dispatch(setUser(null))
                                                 signOut()
+                                                dispatch(setUser(null))
                                                 toast.success('Signed out successfully')
                                             }}
                                             className="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"

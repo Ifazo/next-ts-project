@@ -20,10 +20,18 @@ type IService = {
   endDate: string;
 };
 
+type ICategory = {
+  map(arg0: (service: IService) => import("react").JSX.Element): import("react").ReactNode;
+  id: string;
+  name: string;
+  image: string;
+  description: string;
+};
+
 type IOrder = {
   map(arg0: (service: IService) => import("react").JSX.Element): import("react").ReactNode;
   id: string;
-  service: IService;
+  services: IService[];
   user: string;
 };
 
@@ -32,4 +40,4 @@ type IWishList = {
   user: string;
 };
 
-export type { IUser, IService, IOrder, IWishList };
+export type { IUser, IService,ICategory, IOrder, IWishList };

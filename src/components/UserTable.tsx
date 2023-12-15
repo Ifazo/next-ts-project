@@ -1,33 +1,29 @@
 'use client'
+import { useAppSelector } from "@/store/hook";
 import { IUser } from "@/types"
 import { toast } from "react-hot-toast";
 
 export default function UserTable({ data }: { data: IUser[] }) {
-    console.log(data)
-    const handleEdit = (id: string, user: IUser) => {
-        fetch(`/api/users/${id}`, {
-            method: 'PATCH',
-            cache: 'no-cache',
-            body: JSON.stringify({
-                role: 'admin'
-
-            }),
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        })
-            .then(res => res.json())
-            .then(data => toast.success(`Updated ${data.name}`))
-    }
+    const { user } = useAppSelector(state => state.user)
+    const { token } = user as { token: string }
     const handleDelete = (id: string) => {
-        fetch(`/api/users/${id}`, {
+        fetch(`${process.env.BACKEND_URL}/api/users/${id}`, {
             method: 'DELETE',
+            headers: {
+                'authorization': token,
+            },
             cache: 'no-cache'
         })
             .then(res => res.json())
-            .then(data => toast.success(`Deleted ${data.name}`))
+            .then(data => {
+                if (!!data.success) {
+                    toast.success(data.message)
+                }
+                else {
+                    toast.error(data.message)
+                }
+            })
     }
-
     return (
         <div className="px-4 sm:px-6 lg:px-8">
             <div className="sm:flex sm:items-center">
@@ -63,9 +59,6 @@ export default function UserTable({ data }: { data: IUser[] }) {
                                             Role
                                         </th>
                                         <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                                            <span className="sr-only">Edit</span>
-                                        </th>
-                                        <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
                                             <span className="sr-only">Delete</span>
                                         </th>
                                     </tr>
@@ -78,14 +71,6 @@ export default function UserTable({ data }: { data: IUser[] }) {
                                             </td>
                                             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{user.email}</td>
                                             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{user.role}</td>
-                                            <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                                                <button
-                                                    type="button"
-                                                    onClick={() => handleEdit(user.id, user)}
-                                                    className="text-indigo-600 hover:text-indigo-900">
-                                                    Edit<span className="sr-only">, {user.name}</span>
-                                                </button>
-                                            </td>
                                             <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                                                 <button
                                                     type="button"

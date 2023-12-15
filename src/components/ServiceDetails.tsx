@@ -4,7 +4,7 @@ import Image from 'next/image'
 import toast from 'react-hot-toast'
 import { useState } from 'react'
 import ReviewModal from './ReviewModal'
-import { useSession } from 'next-auth/react'
+import { useAppSelector } from '@/store/hook'
 
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
@@ -22,33 +22,29 @@ type IService = {
 };
 
 export default function ServiceDetails({ data: service }: { data: IService }) {
-    const { data: session } = useSession()
-    const { token } = session as any
+    // console.log(service)
+    const { user } = useAppSelector(state => state.user)
+    const { token } = user as { token: string }
     const [ open, setOpen ] = useState(false)
 
     const handleOrder = async (service: IService) => {
-        if (!session) {
-            toast.error('User not authenticated');
-            return;
-        }
-        await fetch(`https://prisma-postgres-ifaz.vercel.app/api/bookings`, {
+        await fetch(`${process.env.BACKEND_URL}/api/bookings`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'authorization': token
             },
             body: JSON.stringify({
-                services: service,
+                services: [service],
             })
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data)
                 if (!!data.success) {
-                    toast.success('Order placed successfully')
+                    toast.success(data.message)
                 }
                 else {
-                    toast.error('Failed to place order')
+                    toast.error(data.message)
                 }
             })
             .catch(err => {
@@ -58,24 +54,22 @@ export default function ServiceDetails({ data: service }: { data: IService }) {
     }
 
     const handleWishlist = async (service: IService) => {
-        if (!session) {
-            toast.error('User not authenticated');
-            return;
-        }
-        await fetch(`https://prisma-postgres-ifaz.vercel.app/api/wishlist`, {
+        await fetch(`${process.env.BACKEND_URL}/api/wishlist`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'authorization': token
             },
-            body: JSON.stringify({
-                service: service,
-            })
+            body: JSON.stringify({ service: service })
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data)
-                toast.success('Added to wishlist')
+                if (!!data.success) {
+                    toast.success(data.message)
+                }
+                else {
+                    toast.error(data.message)
+                }
             })
             .catch(err => {
                 console.log(err)

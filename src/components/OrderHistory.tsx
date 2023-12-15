@@ -68,7 +68,7 @@ export default async function OrderHistory({ data }: { data: IOrder[] }) {
                                         </tr>
                                     </thead>
                                     <tbody className="border-b border-gray-200 divide-y divide-gray-200 text-sm sm:border-t">
-                                        {order?.service.map((service: IService) => (
+                                        {order?.services?.map((service: IService) => (
                                             <tr key={service.id}>
                                                 <td className="py-6 pr-8">
                                                     <div className="flex items-center">

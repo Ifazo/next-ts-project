@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 
 export default function Hero() {
 
@@ -12,19 +13,19 @@ export default function Hero() {
                                 <div className="max-w-2xl mx-auto py-24 lg:py-64 lg:max-w-none">
                                     <div className="lg:pr-16">
                                         <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl xl:text-6xl">
-                                            Focus on what matters
+                                            <span className="block">For your help</span>
+                                            <span className="block text-indigo-600">online service</span>
                                         </h1>
                                         <p className="mt-4 text-xl text-gray-600">
-                                            All the charts, datepickers, and notifications in the world can not beat checking off some items on
-                                            a paper card.
+                                            Services of all kinds are available here. You can get any service you want from here. You can also provide services here.
                                         </p>
                                         <div className="mt-6">
-                                            <a
-                                                href="#"
+                                            <Link
+                                                href="/auth/signin"
                                                 className="inline-block bg-indigo-600 border border-transparent py-3 px-8 rounded-md font-medium text-white hover:bg-indigo-700"
                                             >
-                                                Shop Productivity
-                                            </a>
+                                                Get started
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>

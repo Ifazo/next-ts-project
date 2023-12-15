@@ -17,8 +17,8 @@ export const authOptions: AuthOptions = {
       name: "Credentials",
       type: "credentials",
       credentials: {
-        username: { label: "email", type: "email" },
-        password: { label: "password", type: "password" },
+        username: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
         try {
@@ -60,6 +60,7 @@ export const authOptions: AuthOptions = {
     },
     async session({ session, token }) {
       console.log(session, token);
+      // session.user = token;
       return {
         ...session,
         ...token,
